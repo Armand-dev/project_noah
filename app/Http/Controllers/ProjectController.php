@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Client;
+use App\Models\Project;
 use Illuminate\Http\Request;
 
-class ClientController extends Controller
+class ProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,16 +14,18 @@ class ClientController extends Controller
     {
         $company = auth()->user()->companies()->first();
 
-        $heading = ['Id', 'Client', 'Actions'];
-        $clients = $company->clients->map(function ($client){
+        $heading = ['Id', 'Project', 'Client', 'Actions'];
+
+        $clients = $company->projects->map(function ($project){
             return [
-                $client->id,
-                $client->name,
+                $project->id,
+                $project->name,
+                $project->client->name,
                 'Edit'
             ];
         });;
 
-        return view('clients.index')
+        return view('projects.index')
             ->with('heading', $heading)
             ->with('clients', $clients);
     }
@@ -33,7 +35,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        return view('clients.create');
+        return view('projects.create');
     }
 
     /**
@@ -43,21 +45,22 @@ class ClientController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'company_id' => ['required', 'numeric', 'exists:App\\Models\\Company,id'],
+            'client_id' => ['required', 'numeric', 'exists:App\\Models\\Client,id'],
         ]);
 
-        Client::create([
+        Project::create([
             'name' => $request->name,
-            'company_id' => $request->company_id
+            'client_id' => $request->client_id,
+            'company_id' => auth()->user()->companies()->first()->id
         ]);
 
-        return redirect()->route('client.index');
+        return redirect()->route('project.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Client $client)
+    public function show(Project $project)
     {
         //
     }
@@ -65,7 +68,7 @@ class ClientController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Client $client)
+    public function edit(Project $project)
     {
         //
     }
@@ -73,7 +76,7 @@ class ClientController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Client $client)
+    public function update(Request $request, Project $project)
     {
         //
     }
@@ -81,7 +84,7 @@ class ClientController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Client $client)
+    public function destroy(Project $project)
     {
         //
     }

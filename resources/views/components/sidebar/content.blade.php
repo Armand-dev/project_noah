@@ -96,9 +96,8 @@
 
         <x-sidebar.link
             title="Projects"
-            href="{{ route('user.index') }}"
-            :isActive="request()->routeIs('')"
-            soon="true"
+            href="{{ route('project.index') }}"
+            :isActive="request()->routeIs('project.index')"
         >
             <x-slot name="icon">
                 <x-icons.projects class="flex-shrink-0 w-6 h-6" aria-hidden="true" />

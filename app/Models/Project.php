@@ -4,21 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Client extends Model
+class Project extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $guarded = [];
 
-    public function company()
+    public function client(): BelongsTo
     {
-        return $this->belongsTo(Company::class);
-    }
-
-    public function projects()
-    {
-        return $this->hasMany(Project::class);
+        return $this->belongsTo(Client::class);
     }
 }
