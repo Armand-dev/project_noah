@@ -85,9 +85,8 @@
 
         <x-sidebar.link
             title="Clients"
-            href="{{ route('user.index') }}"
-            :isActive="request()->routeIs('')"
-            soon="true"
+            href="{{ route('client.index') }}"
+            :isActive="request()->routeIs('client.index')"
         >
             <x-slot name="icon">
                 <x-icons.client class="flex-shrink-0 w-6 h-6" aria-hidden="true" />

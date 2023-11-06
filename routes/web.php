@@ -50,4 +50,5 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::resource('timesheet', \App\Http\Controllers\TimesheetController::class);
 
     Route::resource('user', \App\Http\Controllers\UserController::class)->middleware('can:create users');
+    Route::resource('client', \App\Http\Controllers\ClientController::class)->middleware('can:create users');
 });
