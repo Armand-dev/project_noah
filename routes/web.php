@@ -52,4 +52,5 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::resource('user', \App\Http\Controllers\UserController::class)->middleware('can:create users');
     Route::resource('client', \App\Http\Controllers\ClientController::class)->middleware('can:create users');
     Route::resource('project', \App\Http\Controllers\ProjectController::class)->middleware('can:create users');
+    Route::resource('activity', \App\Http\Controllers\ActivityController::class)->middleware('can:create users');
 });

@@ -83,6 +83,7 @@
         </x-sidebar.link>
     @endif
 
+    @if(auth()->user()->hasPermissionTo('create users'))
         <x-sidebar.link
             title="Clients"
             href="{{ route('client.index') }}"
@@ -92,8 +93,9 @@
                 <x-icons.client class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
             </x-slot>
         </x-sidebar.link>
+    @endif
 
-
+    @if(auth()->user()->hasPermissionTo('create users'))
         <x-sidebar.link
             title="Projects"
             href="{{ route('project.index') }}"
@@ -103,19 +105,19 @@
                 <x-icons.projects class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
             </x-slot>
         </x-sidebar.link>
+    @endif
 
-
+    @if(auth()->user()->hasPermissionTo('create users'))
         <x-sidebar.link
             title="Activities"
-            href="{{ route('user.index') }}"
-            :isActive="request()->routeIs('')"
-            soon="true"
+            href="{{ route('activity.index') }}"
+            :isActive="request()->routeIs('activity.index')"
         >
             <x-slot name="icon">
                 <x-icons.activities class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
             </x-slot>
         </x-sidebar.link>
-
+    @endif
 
         <x-sidebar.link
             title="Reports"

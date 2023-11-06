@@ -13,6 +13,9 @@
             <x-timesheet
                 :headings="$headings"
                 :timesheet="$timesheet"
+                :clients="$clients"
+                :projects="$projects"
+                :activities="$activities"
             ></x-timesheet>
         </div>
 

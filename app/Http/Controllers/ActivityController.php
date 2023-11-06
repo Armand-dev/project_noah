@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Project;
+use App\Models\Activity;
 use Illuminate\Http\Request;
 
-class ProjectController extends Controller
+class ActivityController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,20 +14,19 @@ class ProjectController extends Controller
     {
         $company = auth()->user()->companies()->first();
 
-        $heading = ['Id', 'Project', 'Client', 'Actions'];
+        $heading = ['Id', 'Activity', 'Actions'];
 
-        $projects = $company->projects->map(function ($project){
+        $activities = $company->activities->map(function ($activity){
             return [
-                $project->id,
-                $project->name,
-                $project->client->name,
+                $activity->id,
+                $activity->name,
                 'Edit'
             ];
         });;
 
-        return view('projects.index')
+        return view('activities.index')
             ->with('heading', $heading)
-            ->with('projects', $projects);
+            ->with('activities', $activities);
     }
 
     /**
@@ -35,7 +34,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return view('projects.create');
+        return view('activities.create');
     }
 
     /**
@@ -45,22 +44,20 @@ class ProjectController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'client_id' => ['required', 'numeric', 'exists:App\\Models\\Client,id'],
         ]);
 
-        Project::create([
+        Activity::create([
             'name' => $request->name,
-            'client_id' => $request->client_id,
             'company_id' => auth()->user()->companies()->first()->id
         ]);
 
-        return redirect()->route('project.index');
+        return redirect()->route('activity.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Project $project)
+    public function show(Activity $activity)
     {
         //
     }
@@ -68,7 +65,7 @@ class ProjectController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Project $project)
+    public function edit(Activity $activity)
     {
         //
     }
@@ -76,7 +73,7 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Project $project)
+    public function update(Request $request, Activity $activity)
     {
         //
     }
@@ -84,7 +81,7 @@ class ProjectController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Project $project)
+    public function destroy(Activity $activity)
     {
         //
     }

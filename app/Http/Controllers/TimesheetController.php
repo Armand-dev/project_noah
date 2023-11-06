@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Timesheet;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 class TimesheetController extends Controller
@@ -14,30 +15,15 @@ class TimesheetController extends Controller
      */
     public function index()
     {
-        $headings = ['Day', 'Client', 'Project', 'Activity', 'Sub-activity', 'Actions'];
-        $timesheet = [];
-        $period = CarbonPeriod::create(Carbon::today()->subYear(), Carbon::today()->addDays(2));
-
-        // Iterate over the period
-        foreach ($period as $date) {
-            $timesheet[] = [
-                'meta' => [
-                    'is_weekend' => $date->isWeekend()
-                ],
-                'day' => $date->format('Y-m-d'),
-                'client' => null,
-                'project' => null,
-                'activity' => null,
-                'subactivity' => null,
-                'actions' => null,
-            ];
-        }
-
-        $timesheet = array_reverse($timesheet);
+        $headings = ['Day', 'Client', 'Project', 'Activity', 'Sub-activity', 'Hours', 'Actions'];
+        $timesheet = $this->fillTimesheet(Timesheet::whereDate('day', '>=', Carbon::today()->subYear())->get());
 
         return view('timesheet.index')
             ->with('headings', $headings)
-            ->with('timesheet', $timesheet);
+            ->with('timesheet', $timesheet)
+            ->with('clients', auth()->user()->companies()->first()->clients)
+            ->with('projects', auth()->user()->companies()->first()->projects)
+            ->with('activities', auth()->user()->companies()->first()->activities);
     }
 
     /**
@@ -53,7 +39,24 @@ class TimesheetController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'client_id' => ['required', 'numeric', 'exists:App\\Models\\Client,id'],
+            'project_id' => ['required', 'numeric', 'exists:App\\Models\\Project,id'],
+            'activity_id' => ['required', 'numeric', 'exists:App\\Models\\Activity,id'],
+            'hours' => ['required', 'numeric'],
+            'day' => ['required', 'date'],
+        ]);
+
+        $timesheet = Timesheet::create([
+            'client_id' => $request->client_id,
+            'project_id' => $request->project_id,
+            'activity_id' => $request->activity_id,
+            'hours' => $request->hours,
+            'day' => $request->day,
+            'company_id' => auth()->user()->companies()->first()->id,
+        ]);
+
+        return response()->json($timesheet);
     }
 
     /**
@@ -86,5 +89,53 @@ class TimesheetController extends Controller
     public function destroy(Timesheet $timesheet)
     {
         //
+    }
+
+    public function getEmptyTimesheet()
+    {
+        $timesheet = [];
+        $period = CarbonPeriod::create(Carbon::today()->subYear(), Carbon::today()->addDays(2));
+
+        // Iterate over the period
+        foreach ($period as $date) {
+            $timesheet[] = [
+                'meta' => [
+                    'is_weekend' => $date->isWeekend()
+                ],
+                'id' => null,
+                'day' => $date->format('Y-m-d'),
+                'client' => null,
+                'project' => null,
+                'activity' => null,
+                'subactivity' => null,
+                'hours' => null,
+                'actions' => null,
+            ];
+        }
+
+        return array_reverse($timesheet);
+    }
+
+    public function fillTimesheet(Collection $timesheet)
+    {
+        $emptyTimesheet = $this->getEmptyTimesheet();
+
+        if ($timesheet->isEmpty()) {
+            return $emptyTimesheet;
+        }
+
+        foreach ($emptyTimesheet as $index => $emptyDay) {
+            if ($timesheet->contains('day', $emptyDay['day'])) {
+                $spentTime = $timesheet->where('day', $emptyDay['day'])->first();
+
+                $emptyTimesheet[$index]['id'] = $spentTime->id;
+                $emptyTimesheet[$index]['client'] = $spentTime->client->name;
+                $emptyTimesheet[$index]['project'] = $spentTime->project->name;
+                $emptyTimesheet[$index]['activity'] = $spentTime->activity->name;
+                $emptyTimesheet[$index]['hours'] = $spentTime->hours;
+            }
+        }
+
+        return $emptyTimesheet;
     }
 }
