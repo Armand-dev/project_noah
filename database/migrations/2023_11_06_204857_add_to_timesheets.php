@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('timesheets', function (Blueprint $table) {
+            $table->foreignIdFor(\App\Models\User::class);
             $table->foreignIdFor(\App\Models\Company::class);
             $table->foreignIdFor(\App\Models\Client::class);
             $table->foreignIdFor(\App\Models\Project::class);

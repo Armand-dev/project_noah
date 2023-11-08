@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activity;
+use App\Models\Client;
+use App\Models\Project;
 use App\Models\Timesheet;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -16,7 +19,21 @@ class TimesheetController extends Controller
     public function index()
     {
         $headings = ['Day', 'Client', 'Project', 'Activity', 'Sub-activity', 'Hours', 'Actions'];
-        $timesheet = $this->fillTimesheet(Timesheet::whereDate('day', '>=', Carbon::today()->subYear())->get());
+        $timesheet = Timesheet::query()
+            ->whereDate('day', '>=', Carbon::today()->subYear())
+            ->get()
+            ->map(function ($work) {
+                $work['client'] = Client::find($work['client_id'])->name;
+                $work['project'] = Project::find($work['project_id'])->name;
+                $work['activity'] = Activity::find($work['activity_id'])->name;
+
+                return $work;
+            })
+            ->groupBy(function($timesheet) {
+                return $timesheet->day;
+            });
+
+        $timesheet = $this->fillTimesheet($timesheet);
 
         return view('timesheet.index')
             ->with('headings', $headings)
@@ -48,6 +65,7 @@ class TimesheetController extends Controller
         ]);
 
         $timesheet = Timesheet::create([
+            'user_id' => auth()->user()->id,
             'client_id' => $request->client_id,
             'project_id' => $request->project_id,
             'activity_id' => $request->activity_id,
@@ -98,18 +116,11 @@ class TimesheetController extends Controller
 
         // Iterate over the period
         foreach ($period as $date) {
-            $timesheet[] = [
+            $timesheet[$date->format('Y-m-d')] = [
                 'meta' => [
                     'is_weekend' => $date->isWeekend()
                 ],
-                'id' => null,
-                'day' => $date->format('Y-m-d'),
-                'client' => null,
-                'project' => null,
-                'activity' => null,
-                'subactivity' => null,
-                'hours' => null,
-                'actions' => null,
+                'data' => []
             ];
         }
 
@@ -124,18 +135,21 @@ class TimesheetController extends Controller
             return $emptyTimesheet;
         }
 
-        foreach ($emptyTimesheet as $index => $emptyDay) {
-            if ($timesheet->contains('day', $emptyDay['day'])) {
-                $spentTime = $timesheet->where('day', $emptyDay['day'])->first();
+        $fillTimesheet = $emptyTimesheet;
+        foreach ($timesheet as $day => $work) {
+            $fillTimesheet[$day]['data'] = $work->toArray();
 
-                $emptyTimesheet[$index]['id'] = $spentTime->id;
-                $emptyTimesheet[$index]['client'] = $spentTime->client->name;
-                $emptyTimesheet[$index]['project'] = $spentTime->project->name;
-                $emptyTimesheet[$index]['activity'] = $spentTime->activity->name;
-                $emptyTimesheet[$index]['hours'] = $spentTime->hours;
-            }
+//            if ($timesheet->contains('day', $emptyDay['day'])) {
+//                $spentTime = $timesheet->where('day', $emptyDay['day'])->first();
+//
+//                $emptyTimesheet[$index]['id'] = $spentTime->id;
+//                $emptyTimesheet[$index]['client'] = $spentTime->client->name;
+//                $emptyTimesheet[$index]['project'] = $spentTime->project->name;
+//                $emptyTimesheet[$index]['activity'] = $spentTime->activity->name;
+//                $emptyTimesheet[$index]['hours'] = $spentTime->hours;
+//            }
         }
 
-        return $emptyTimesheet;
+        return $fillTimesheet;
     }
 }
