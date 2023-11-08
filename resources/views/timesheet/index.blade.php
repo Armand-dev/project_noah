@@ -7,7 +7,7 @@
         </div>
     </x-slot>
 
-    <div class="p-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
+    <div class="p-1 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
 
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <x-timesheet
