@@ -17,6 +17,56 @@
     </tr>
     </thead>
     <tbody>
+    <div id="overlay" class="hidden"></div>
+    <div id="drawer" class="">
+        <div id="drawer-head" class="mb-2">
+            <h5
+                id="work-day"
+                class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 font-bold"
+            ></h5>
+        </div>
+        <div id="drawer-body">
+            <div class="mb-2 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                <p class="font-normal text-gray-700 dark:text-gray-400">Client: NEURON ENG SRL</p>
+                <p class="font-normal text-gray-700 dark:text-gray-400">Project: NEURON ENG SRL</p>
+                <p class="font-normal text-gray-700 dark:text-gray-400">Activity: NEURON ENG SRL</p>
+                <p class="font-normal text-gray-700 dark:text-gray-400">Hours: NEURON ENG SRL</p>
+            </div>
+            <div class="mb-2 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                <p class="font-normal text-gray-700 dark:text-gray-400">Client: NEURON ENG SRL</p>
+                <p class="font-normal text-gray-700 dark:text-gray-400">Project: NEURON ENG SRL</p>
+                <p class="font-normal text-gray-700 dark:text-gray-400">Activity: NEURON ENG SRL</p>
+                <p class="font-normal text-gray-700 dark:text-gray-400">Hours: NEURON ENG SRL</p>
+            </div>
+            <div class="mb-2 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                <p class="font-normal text-gray-700 dark:text-gray-400">Client: NEURON ENG SRL</p>
+                <p class="font-normal text-gray-700 dark:text-gray-400">Project: NEURON ENG SRL</p>
+                <p class="font-normal text-gray-700 dark:text-gray-400">Activity: NEURON ENG SRL</p>
+                <p class="font-normal text-gray-700 dark:text-gray-400">Hours: NEURON ENG SRL</p>
+            </div>
+            <div class="mb-2 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                <p class="font-normal text-gray-700 dark:text-gray-400">Client: NEURON ENG SRL</p>
+                <p class="font-normal text-gray-700 dark:text-gray-400">Project: NEURON ENG SRL</p>
+                <p class="font-normal text-gray-700 dark:text-gray-400">Activity: NEURON ENG SRL</p>
+                <p class="font-normal text-gray-700 dark:text-gray-400">Hours: NEURON ENG SRL</p>
+            </div>
+            <div class="mb-2 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                <p class="font-normal text-gray-700 dark:text-gray-400">Client: NEURON ENG SRL</p>
+                <p class="font-normal text-gray-700 dark:text-gray-400">Project: NEURON ENG SRL</p>
+                <p class="font-normal text-gray-700 dark:text-gray-400">Activity: NEURON ENG SRL</p>
+                <p class="font-normal text-gray-700 dark:text-gray-400">Hours: NEURON ENG SRL</p>
+            </div>
+            <div class="mb-2 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                <p class="font-normal text-gray-700 dark:text-gray-400">Client: NEURON ENG SRL</p>
+                <p class="font-normal text-gray-700 dark:text-gray-400">Project: NEURON ENG SRL</p>
+                <p class="font-normal text-gray-700 dark:text-gray-400">Activity: NEURON ENG SRL</p>
+                <p class="font-normal text-gray-700 dark:text-gray-400">Hours: NEURON ENG SRL</p>
+            </div>
+            <div class="mb-2 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                <p class="font-normal text-gray-700 dark:text-gray-400">+ add work</p>
+            </div>
+        </div>
+    </div>
         @foreach($timesheet as $day => $row)
             @if(count($row['data']))
 
@@ -27,7 +77,9 @@
                     @else
                         bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600
                     @endif
-                    ">
+                    "
+                    dt-id="{{ $day }}"
+                    >
                         <th dt-col="day" scope="row" class="@if($loop->last) border-b dark:border-gray-700 @endif px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             @if($loop->first)
                                 {{ $day ?? '' }}
@@ -70,7 +122,9 @@
                 @else
                     bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600
                 @endif
-                ">
+                "
+                dt-id="{{ $day }}"
+                >
                     <th dt-col="day" scope="row" class="border-b dark:border-gray-700 px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         {{ $day ?? ''}}
                     </th>
@@ -96,23 +150,69 @@
     </tbody>
 </table>
 <script>
+    let overlay = document.querySelector('#overlay');
+    let drawer = document.querySelector('#drawer');
+
     document.querySelectorAll('[dt-col="edit"]').forEach((item) => {
         item.addEventListener('click', (e) => {
-            e.preventDefault()
-            let row = e.target.parentNode.parentNode;
+            e.preventDefault();
 
-            let clientSelect = '<select name="clients"><option value="">Select client...</option>@foreach($clients as $client)<option value="{{ $client->id }}">{{ $client->name }}</option>@endforeach</select>';
-            let projectSelect = '<select name="projects"><option value="">Select project...</option>@foreach($projects as $project)<option value="{{ $project->id }}">{{ $project->name }}</option>@endforeach</select>';
-            let activitySelect = '<select name="activities"> <option value="">Select activity...</option>@foreach($activities as $activity)<option value="{{ $activity->id }}">{{ $activity->name }}</option>@endforeach</select>';
-            let hoursInput = '<input name="hours" type="number" placeholder="Input hours"/>';
+            overlay.style.display = 'block';
+            drawer.style.right = '0px';
 
-            row.querySelector('[dt-col="client"]').innerHTML = clientSelect;
-            row.querySelector('[dt-col="project"]').innerHTML = projectSelect;
-            row.querySelector('[dt-col="activity"]').innerHTML = activitySelect;
-            row.querySelector('[dt-col="hours"]').innerHTML = hoursInput;
+            let row = e.target.closest('tr');
+            let day = row.getAttribute('dt-id');
 
-            row.querySelector('[dt-col="edit"]').style.display = 'none';
-            row.querySelector('[dt-col="save"]').style.display = 'block';
+            drawer.querySelector('#drawer-head > #work-day').innerHTML = "Day " + day;
         });
     });
+
+    document.addEventListener('keydown', (e) => {
+        e.preventDefault();
+
+        if(overlay.style.display === 'block' && e.key === 'Escape') {
+            overlay.style.display = 'none';
+            drawer.style.right = '-500px';
+        }
+    });
+
+    overlay.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        overlay.style.display = 'none';
+        drawer.style.right = '-500px';
+    });
 </script>
+<style>
+    #overlay {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0,0,0,0.3);
+    }
+
+    #drawer {
+        transition: all .1s ease-out;
+        position: fixed;
+        top: 0px;
+        right: -500px;
+        background: #ffffff;
+        width: 25%;
+        height: 100vh;
+        box-shadow: -10px 0px 40px rgba(0,0,0,0.1);
+        padding: 80px 40px;
+    }
+
+    #drawer-head {
+        margin-top: 50px;
+    }
+
+    #drawer-body {
+        border: 1px solid rgba(0,0,0,0.1);
+        border-radius: 10px;
+        overflow-y: scroll;
+        height: 60vh;
+    }
+</style>
