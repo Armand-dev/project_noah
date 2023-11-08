@@ -106,6 +106,7 @@
         'translate-y-full': scrollingDown,
         'translate-y-0': scrollingUp,
     }"
+    style="z-index: 2;"
 >
     <x-button
         type="button"

@@ -6,6 +6,7 @@ use App\Models\Activity;
 use App\Models\Client;
 use App\Models\Project;
 use App\Models\Timesheet;
+use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Collection;
@@ -18,7 +19,7 @@ class TimesheetController extends Controller
      */
     public function index()
     {
-        $headings = ['Day', 'Client', 'Project', 'Activity', 'Sub-activity', 'Hours', 'Actions'];
+        $headings = ['Day', 'Client', 'Project', 'Activity', 'Sub-activity', 'User', 'Hours', ''];
         $timesheet = Timesheet::query()
             ->whereDate('day', '>=', Carbon::today()->subYear())
             ->get()
@@ -26,6 +27,7 @@ class TimesheetController extends Controller
                 $work['client'] = Client::find($work['client_id'])->name;
                 $work['project'] = Project::find($work['project_id'])->name;
                 $work['activity'] = Activity::find($work['activity_id'])->name;
+                $work['user'] = User::find($work['user_id'])->name;
 
                 return $work;
             })

@@ -32,7 +32,7 @@
     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
     <tr>
         @foreach($headings as $heading)
-            <th scope="col" class="px-6 py-3">
+            <th scope="col" class="px-2 py-2">
                 {{ __($heading) }}
             </th>
         @endforeach
@@ -44,39 +44,50 @@
 
                 @foreach($row['data'] as $work)
                     <tr class="
-                    @if($row['meta']['is_weekend'])
+                    @if(\Carbon\Carbon::parse($day)->isToday())
+                        bg-green-100
+                    @elseif($row['meta']['is_weekend'])
                         bg-gray-100 dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600
                     @else
                         bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600
                     @endif
-                    @if(\Carbon\Carbon::parse($day)->isToday())
-                        bg-green-100
-                    @endif
                     "
                     dt-id="{{ $day }}"
                     >
-                        <th dt-col="day" scope="row" class="@if($loop->last) border-b dark:border-gray-700 @endif px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th dt-col="day" scope="row" class="@if($loop->last) border-b dark:border-gray-700 @endif px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             @if($loop->first)
                                 {{ $day ?? '' }}
                             @endif
                         </th>
-                        <td dt-col="client" class="px-6 py-4 border-b dark:border-gray-700">
+                        <td dt-col="client" class="px-2 py-2 border-b dark:border-gray-700">
                             {{ $work['client'] ?? '' }}
                         </td>
-                        <td dt-col="project" class="px-6 py-4 border-b dark:border-gray-700">
+                        <td dt-col="project" class="px-2 py-2 border-b dark:border-gray-700">
                             {{ $work['project'] ?? '' }}
                         </td>
-                        <td dt-col="activity" class="px-6 py-4 border-b dark:border-gray-700">
+                        <td dt-col="activity" class="px-2 py-2 border-b dark:border-gray-700">
                             {{ $work['activity'] ?? '' }}
                         </td>
-                        <td dt-col="subactivity" class="px-6 py-4 border-b dark:border-gray-700">
+                        <td dt-col="subactivity" class="px-2 py-2 border-b dark:border-gray-700">
                             {{ $work['subactivity'] ?? '' }}
                         </td>
-                        <td dt-col="hours" class="px-6 py-4 border-b dark:border-gray-700">
+                        <td dt-col="user" class="px-2 py-2 border-b dark:border-gray-700">
+                            {{ $work['user'] ?? '' }}
+                        </td>
+                        <td dt-col="hours" class="px-2 py-2 border-b dark:border-gray-700">
                             {{ $work['hours'] ?? '' }}
                         </td>
 
-                        <td class="px-6 py-4 text-center @if($loop->last) border-b dark:border-gray-700 @endif">
+                        <td class="px-2 py-2 text-center
+
+                        @if(\Carbon\Carbon::parse($day)->isToday())
+                            bg-green-100
+                        @elseif($row['meta']['is_weekend'])
+                            bg-gray-100 dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600
+                        @else
+                            bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600
+                        @endif
+                         sticky right-0 @if($loop->last) border-b dark:border-gray-700 @endif">
                             @if($loop->first)
                                 <a
                                     dt-col="edit"
@@ -102,16 +113,26 @@
                 "
                 dt-id="{{ $day }}"
                 >
-                    <th dt-col="day" scope="row" class="border-b dark:border-gray-700 px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <th dt-col="day" scope="row" class="border-b dark:border-gray-700 px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         {{ $day ?? ''}}
                     </th>
-                    <td dt-col="client" class="px-6 py-4 border-b dark:border-gray-700"></td>
-                    <td dt-col="project" class="px-6 py-4 border-b dark:border-gray-700"></td>
-                    <td dt-col="activity" class="px-6 py-4 border-b dark:border-gray-700"></td>
-                    <td dt-col="subactivity" class="px-6 py-4 border-b dark:border-gray-700"></td>
-                    <td dt-col="hours" class="px-6 py-4 border-b dark:border-gray-700"></td>
+                    <td dt-col="client" class="px-2 py-2 border-b dark:border-gray-700"></td>
+                    <td dt-col="project" class="px-2 py-2 border-b dark:border-gray-700"></td>
+                    <td dt-col="activity" class="px-2 py-2 border-b dark:border-gray-700"></td>
+                    <td dt-col="subactivity" class="px-2 py-2 border-b dark:border-gray-700"></td>
+                    <td dt-col="user" class="px-2 py-2 border-b dark:border-gray-700"></td>
+                    <td dt-col="hours" class="px-2 py-2 border-b dark:border-gray-700"></td>
 
-                    <td class="px-6 py-4 text-center border-b dark:border-gray-700">
+                    <td class="px-2 py-2 text-center border-b dark:border-gray-700 sticky right-0
+
+                        @if(\Carbon\Carbon::parse($day)->isToday())
+                            bg-green-100
+                        @elseif($row['meta']['is_weekend'])
+                            bg-gray-100 dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600
+                        @else
+                            bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600
+                        @endif
+                    ">
                         <a
                             dt-col="edit"
                             href="#"
@@ -150,7 +171,7 @@
                 .get('/getWorkday?day=' + day)
                 .then(res => {
                     res.data.forEach(workday => {
-                        let content = `<div class="mb-2 block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"> <div class="flex gap-1" style="float:right;">                                    <x-icons.edit id="edit-work" class="flex-shrink-0 cursor-pointer" style="width: 10px;" aria-hidden="true" /> <x-icons.trash id="delete-work" class="flex-shrink-0 cursor-pointer" style="width: 10px;" aria-hidden="true" /> </div>               <table class="w-full table-auto text-left text-gray-500 dark:text-gray-400">                    <thead></thead>                        <tbody>                        <tr class="px-6 py-4 border-b dark:border-gray-700">                            <th>Client</th>                            <td>` + workday.client + `</td>                        </tr>                        <tr class="px-6 py-4 border-b dark:border-gray-700">                            <th>Project</th>                            <td>` + workday.project + `</td>                        </tr>                        <tr class="px-6 py-4 border-b dark:border-gray-700">                            <th>Activity</th>                            <td>` + workday.activity + `</td>                        </tr><tr class="px-6 py-4 border-b dark:border-gray-700">                            <th>Subactivity</th>                            <td>` + workday.activity + `</td>                        <tr class="px-6 py-4 border-b dark:border-gray-700">                            <th>Hours</th>                            <td>` + workday.hours + `</td>                        </tr>         <tr class="px-6 py-4">                            <th>Observation</th>                            <td>` + workday.observation + `</td>                        </tr>           </tbody>                </table>            </div>`;
+                        let content = `<div class="mb-2 block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"> <div class="flex gap-1" style="float:right;">                                    <x-icons.edit id="edit-work" class="flex-shrink-0 cursor-pointer" style="width: 10px;" aria-hidden="true" /> <x-icons.trash id="delete-work" class="flex-shrink-0 cursor-pointer" style="width: 10px;" aria-hidden="true" /> </div>               <table class="w-full table-auto text-left text-gray-500 dark:text-gray-400">                    <thead></thead>                        <tbody>                        <tr class="px-2 py-2 border-b dark:border-gray-700">                            <th>Client</th>                            <td>` + workday.client + `</td>                        </tr>                        <tr class="px-2 py-2 border-b dark:border-gray-700">                            <th>Project</th>                            <td>` + workday.project + `</td>                        </tr>                        <tr class="px-2 py-2 border-b dark:border-gray-700">                            <th>Activity</th>                            <td>` + workday.activity + `</td>                        </tr><tr class="px-2 py-2 border-b dark:border-gray-700">                            <th>Subactivity</th>                            <td>` + workday.activity + `</td>                        <tr class="px-2 py-2 border-b dark:border-gray-700">                            <th>Hours</th>                            <td>` + workday.hours + `</td>                        </tr>         <tr class="px-2 py-2">                            <th>Observation</th>                            <td>` + workday.observation + `</td>                        </tr>           </tbody>                </table>            </div>`;
                         drawerWorkday.insertAdjacentHTML('beforeend', content);
                     });
                 })
@@ -179,7 +200,11 @@
     }
 
     document.querySelector('#add-human-work').addEventListener('click', (e) => {
-        let content = `<div class="mb-2 block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">          <table class="w-full table-auto text-left text-gray-500 dark:text-gray-400">                    <thead></thead>                        <tbody>                        <tr class="px-6 py-4 border-b dark:border-gray-700">                            <th>Client</th>                            <td> <select name="client" id=""><option value="">...</option>@foreach($clients as $client) <option value="{{ $client->id }}">{{ $client->name }}</option> @endforeach</select> </td>                        </tr>                        <tr class="px-6 py-4 border-b dark:border-gray-700">                            <th>Project</th>                            <td><select name="project" id=""><option value="">...</option>@foreach($projects as $project) <option value="{{ $project->id }}">{{ $project->name }}</option> @endforeach</select></td>                        </tr>                        <tr class="px-6 py-4 border-b dark:border-gray-700">                            <th>Activity</th>                            <td><select name="activity" id=""><option value="">...</option>@foreach($activities as $activity) <option value="{{ $activity->id }}">{{ $activity->name }}</option> @endforeach</select></td>                        </tr><tr class="px-6 py-4 border-b dark:border-gray-700">                            <th>Subactivity</th>                            <td><select name="subactivity" id=""><option value="">...</option>@foreach($activities as $activity) <option value="{{ $activity->id }}">{{ $activity->name }}</option> @endforeach</select></td>                        <tr class="px-6 py-4 border-b dark:border-gray-700">                            <th>Hours</th>                            <td> <input name="hours" placeholder="..." type="text"> </td>                        </tr>         <tr class="px-6 py-4">                            <th>Observation</th>                            <td><textarea  name="observation" placeholder="..."></textarea></td>                        </tr>           </tbody>                </table>  <button id="save-work" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">  Save</button>           </div>`;
+        if (document.querySelectorAll('#save-work').length) {
+            return;
+        }
+
+        let content = `<div class="mb-2 block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">          <table class="w-full table-auto text-left text-gray-500 dark:text-gray-400">                    <thead></thead>                        <tbody>                        <tr class="px-2 py-2 border-b dark:border-gray-700">                            <th>Client</th>                            <td> <select name="client" id="" ><option value="">...</option>@foreach($clients as $client) <option value="{{ $client->id }}">{{ $client->name }}</option> @endforeach</select> </td>                        </tr>                        <tr class="px-2 py-2 border-b dark:border-gray-700">                            <th>Project</th>                            <td><select name="project" id=""><option value="">...</option>@foreach($projects as $project) <option value="{{ $project->id }}">{{ $project->name }}</option> @endforeach</select></td>                        </tr>                        <tr class="px-2 py-2 border-b dark:border-gray-700">                            <th>Activity</th>                            <td><select name="activity" id=""><option value="">...</option>@foreach($activities as $activity) <option value="{{ $activity->id }}">{{ $activity->name }}</option> @endforeach</select></td>                        </tr><tr class="px-2 py-2 border-b dark:border-gray-700">                            <th>Subactivity</th>                            <td><select name="subactivity" id=""><option value="">...</option>@foreach($activities as $activity) <option value="{{ $activity->id }}">{{ $activity->name }}</option> @endforeach</select></td>                        <tr class="px-2 py-2 border-b dark:border-gray-700">                            <th>Hours</th>                            <td> <input name="hours" placeholder="..." type="text"> </td>                        </tr>         <tr class="px-2 py-2">                            <th>Observation</th>                            <td><textarea  name="observation" placeholder="..."></textarea></td>                        </tr>           </tbody>                </table>  <button id="save-work" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">  Save</button>           </div>`;
         drawerWorkday.insertAdjacentHTML('beforeend', content);
         drawerWorkday.scrollTop = drawerWorkday.scrollHeight;
 
@@ -198,12 +223,13 @@
                         .then(res => {
                             drawerWorkday.innerHTML = '';
                             res.data.forEach(workday => {
-                                let content = `<div class="mb-2 block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">      <div class="flex gap-1" style="float:right;">                                    <x-icons.edit id="edit-work" class="flex-shrink-0 cursor-pointer" style="width: 10px;" aria-hidden="true" /> <x-icons.trash id="delete-work" class="flex-shrink-0 cursor-pointer" style="width: 10px;" aria-hidden="true" /> </div>          <table class="w-full table-auto text-left text-gray-500 dark:text-gray-400">                    <thead></thead>                        <tbody>                        <tr class="px-6 py-4 border-b dark:border-gray-700">                            <th>Client</th>                            <td>` + workday.client + `</td>                        </tr>                        <tr class="px-6 py-4 border-b dark:border-gray-700">                            <th>Project</th>                            <td>` + workday.project + `</td>                        </tr>                        <tr class="px-6 py-4 border-b dark:border-gray-700">                            <th>Activity</th>                            <td>` + workday.activity + `</td>                        </tr><tr class="px-6 py-4 border-b dark:border-gray-700">                            <th>Subactivity</th>                            <td>` + workday.activity + `</td>                        <tr class="px-6 py-4 border-b dark:border-gray-700">                            <th>Hours</th>                            <td>` + workday.hours + `</td>                        </tr>         <tr class="px-6 py-4">                            <th>Observation</th>                            <td>` + workday.observation + `</td>                        </tr>           </tbody>                </table>            </div>`;
+                                let content = `<div class="mb-2 block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">      <div class="flex gap-1" style="float:right;">                                    <x-icons.edit id="edit-work" class="flex-shrink-0 cursor-pointer" style="width: 10px;" aria-hidden="true" /> <x-icons.trash id="delete-work" class="flex-shrink-0 cursor-pointer" style="width: 10px;" aria-hidden="true" /> </div>          <table class="w-full table-auto text-left text-gray-500 dark:text-gray-400">                    <thead></thead>                        <tbody>                        <tr class="px-2 py-2 border-b dark:border-gray-700">                            <th>Client</th>                            <td>` + workday.client + `</td>                        </tr>                        <tr class="px-2 py-2 border-b dark:border-gray-700">                            <th>Project</th>                            <td>` + workday.project + `</td>                        </tr>                        <tr class="px-2 py-2 border-b dark:border-gray-700">                            <th>Activity</th>                            <td>` + workday.activity + `</td>                        </tr><tr class="px-2 py-2 border-b dark:border-gray-700">                            <th>Subactivity</th>                            <td>` + workday.activity + `</td>                        <tr class="px-2 py-2 border-b dark:border-gray-700">                            <th>Hours</th>                            <td>` + workday.hours + `</td>                        </tr>         <tr class="px-2 py-2">                            <th>Observation</th>                            <td>` + workday.observation + `</td>                        </tr>           </tbody>                </table>            </div>`;
                                 drawerWorkday.insertAdjacentHTML('beforeend', content);
                             });
                         })
                         .catch(err => alert(err));
                 })
+                .catch(err => alert(Object.entries(err.response.data.errors).join("\n")));
         });
     });
 
@@ -219,6 +245,7 @@
     }
 
     #drawer {
+        z-index: 1;
         transition: all .1s ease-out;
         position: fixed;
         top: 0px;
@@ -243,4 +270,21 @@
         overflow-y: scroll;
         max-height: 75vh;
     }
+
+    #drawer-body select {
+        padding: 2px 4px;
+        width: 100%;
+    }
+
+    #drawer-body input {
+        padding: 2px 4px;
+        width: 100%;
+    }
+
+    #drawer-body textarea {
+        padding: 2px 4px;
+        width: 100%;
+    }
+
+
 </style>
