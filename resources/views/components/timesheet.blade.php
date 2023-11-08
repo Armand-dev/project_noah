@@ -49,6 +49,9 @@
                     @else
                         bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600
                     @endif
+                    @if(\Carbon\Carbon::parse($day)->isToday())
+                        bg-green-100
+                    @endif
                     "
                     dt-id="{{ $day }}"
                     >
@@ -93,6 +96,9 @@
                     bg-gray-100 dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600
                 @else
                     bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600
+                @endif
+                @if(\Carbon\Carbon::parse($day)->isToday())
+                    bg-green-100
                 @endif
                 "
                 dt-id="{{ $day }}"
