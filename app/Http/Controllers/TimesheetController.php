@@ -152,4 +152,24 @@ class TimesheetController extends Controller
 
         return $fillTimesheet;
     }
+
+    public function getWorkday()
+    {
+        $day = \request()->query('day');
+        if (!$day) {
+            return response()->json([], 403);
+        }
+
+        $workday = Timesheet::query()
+            ->where('day', $day)
+            ->get()
+            ->map(function ($work) {
+                $work['client'] = Client::find($work['client_id'])->name;
+                $work['project'] = Project::find($work['project_id'])->name;
+                $work['activity'] = Activity::find($work['activity_id'])->name;
+
+                return $work;
+            });
+        return response()->json($workday);
+    }
 }

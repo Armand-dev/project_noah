@@ -47,6 +47,7 @@ require __DIR__ . '/auth.php';
 
 
 Route::middleware(['auth', 'verified'])->group(function() {
+    Route::get('/getWorkday', [\App\Http\Controllers\TimesheetController::class, 'getWorkday']);
     Route::resource('timesheet', \App\Http\Controllers\TimesheetController::class);
 
     Route::resource('user', \App\Http\Controllers\UserController::class)->middleware('can:create users');
