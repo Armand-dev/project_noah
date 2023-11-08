@@ -92,13 +92,12 @@
                 @endforeach
             @else
                 <tr class="
-                @if($row['meta']['is_weekend'])
+                @if(\Carbon\Carbon::parse($day)->isToday())
+                    bg-green-100
+                @elseif($row['meta']['is_weekend'])
                     bg-gray-100 dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600
                 @else
                     bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600
-                @endif
-                @if(\Carbon\Carbon::parse($day)->isToday())
-                    bg-green-100
                 @endif
                 "
                 dt-id="{{ $day }}"
