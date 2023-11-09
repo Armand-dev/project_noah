@@ -3,7 +3,7 @@
     aria-label="main"
     class="flex flex-col flex-1 gap-4 px-3"
 >
-    <span class="text-gray-500 bg-gray-100 rounded p-2"><span class="text-xs">Company:</span> <br><span class="text-sm font-semibold">{{ auth()->user()->companies()->first()->name }}</span></span>
+{{--    <span class="text-gray-500 bg-gray-100 rounded p-2"><span class="text-xs">Company:</span> <br><span class="text-sm font-semibold">{{ auth()->user()->companies()->first()->name }}</span></span>--}}
 
 
     <x-sidebar.link

@@ -244,7 +244,7 @@
 
                                                         // copy action column to next row
                                                         sameDayWork[1].querySelector('.sticky').innerHTML = sameDayWork[0].querySelector('.sticky').innerHTML
-                                               
+
                                                         // delete row
                                                         timesheet.querySelector('tr[dt-id="'+id+'"]').remove();
                                                     } else {
