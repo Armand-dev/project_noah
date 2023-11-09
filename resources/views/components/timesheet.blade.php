@@ -28,7 +28,7 @@
     </div>
 </div>
 
-<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+<table id="timesheet" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
     <tr>
         @foreach($headings as $heading)
@@ -52,13 +52,12 @@
                         bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600
                     @endif
                     "
-                    dt-id="{{ $day }}"
+                    dt-day="{{ $day }}"
+                    dt-id="{{ $work['id'] }}"
                     >
-                        <th dt-col="day" scope="row" class="@if($loop->last) border-b dark:border-gray-700 @endif px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            @if($loop->first)
+                        <th dt-col="day" scope="row" class="@if($loop->last) border-b dark:border-gray-700 @endif px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">@if($loop->first)
                                 {{ $day ?? '' }}
-                            @endif
-                        </th>
+                            @endif</th>
                         <td dt-col="client" class="px-2 py-2 border-b dark:border-gray-700">
                             {{ $work['client'] ?? '' }}
                         </td>
@@ -111,7 +110,7 @@
                     bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600
                 @endif
                 "
-                dt-id="{{ $day }}"
+                dt-day="{{ $day }}"
                 >
                     <th dt-col="day" scope="row" class="border-b dark:border-gray-700 px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         {{ $day ?? ''}}
@@ -148,11 +147,16 @@
     </tbody>
 </table>
 <script>
+    let timesheet = document.querySelector('#timesheet');
     let overlay = document.querySelector('#overlay');
     let drawer = document.querySelector('#drawer');
     let drawerHead = drawer.querySelector('#drawer-head');
     let drawerBody = drawer.querySelector('#drawer-body');
     let drawerWorkday = drawerBody.querySelector('#workday');
+
+    let handleEditButton = function () {
+
+    }
 
     document.querySelectorAll('[dt-col="edit"]').forEach((item) => {
         item.addEventListener('click', (e) => {
@@ -162,7 +166,7 @@
             drawer.style.right = '0px';
 
             let row = e.target.closest('tr');
-            let day = row.getAttribute('dt-id');
+            let day = row.getAttribute('dt-day');
 
             drawerHead.querySelector('h5').innerHTML = "Day " + day;
             drawerHead.setAttribute('dt-day', day);
@@ -171,8 +175,96 @@
                 .get('/getWorkday?day=' + day)
                 .then(res => {
                     res.data.forEach(workday => {
-                        let content = `<div class="mb-2 block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"> <div class="flex gap-1" style="float:right;">                                    <x-icons.edit id="edit-work" class="flex-shrink-0 cursor-pointer" style="width: 10px;" aria-hidden="true" /> <x-icons.trash id="delete-work" class="flex-shrink-0 cursor-pointer" style="width: 10px;" aria-hidden="true" /> </div>               <table class="w-full table-auto text-left text-gray-500 dark:text-gray-400">                    <thead></thead>                        <tbody>                        <tr class="px-2 py-2 border-b dark:border-gray-700">                            <th>Client</th>                            <td>` + workday.client + `</td>                        </tr>                        <tr class="px-2 py-2 border-b dark:border-gray-700">                            <th>Project</th>                            <td>` + workday.project + `</td>                        </tr>                        <tr class="px-2 py-2 border-b dark:border-gray-700">                            <th>Activity</th>                            <td>` + workday.activity + `</td>                        </tr><tr class="px-2 py-2 border-b dark:border-gray-700">                            <th>Subactivity</th>                            <td>` + workday.activity + `</td>                        <tr class="px-2 py-2 border-b dark:border-gray-700">                            <th>Hours</th>                            <td>` + workday.hours + `</td>                        </tr>         <tr class="px-2 py-2">                            <th>Observation</th>                            <td>` + workday.observation + `</td>                        </tr>           </tbody>                </table>            </div>`;
+                        let content = `<div dt-id="` + workday.id + `" dt-scope="drawer-workday" class="mb-2 block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                                            <div class="flex gap-4" style="float:right;">
+                                                <span id="edit-work" dt-id="` + workday.id + `">
+                                                    <x-icons.edit class="flex-shrink-0 cursor-pointer" aria-hidden="true" />
+                                                </span>
+                                                <span id="delete-work" dt-id="` + workday.id + `" class="cursor-pointer">
+                                                    <x-icons.trash class="flex-shrink-0 cursor-pointer" aria-hidden="true" />
+                                                </span>
+                                            </div>
+                                            <table class="w-full table-auto text-left text-gray-500 dark:text-gray-400">
+                                                <thead></thead>
+                                                <tbody>
+                                                    <tr class="px-2 py-2 border-b dark:border-gray-700">
+                                                        <th>Client</th>
+                                                        <td>` + workday.client + `</td>
+                                                    </tr>
+                                                    <tr class="px-2 py-2 border-b dark:border-gray-700">
+                                                        <th>Project</th>
+                                                        <td>` + workday.project + `</td>
+                                                    </tr>
+                                                    <tr class="px-2 py-2 border-b dark:border-gray-700">
+                                                        <th>Activity</th>
+                                                        <td>` + workday.activity + `</td>
+                                                    </tr>
+                                                    <tr class="px-2 py-2 border-b dark:border-gray-700">
+                                                        <th>Subactivity</th>
+                                                        <td>` + workday.activity + `</td>
+                                                    </tr>
+                                                    <tr class="px-2 py-2 border-b dark:border-gray-700">
+                                                        <th>Hours</th>
+                                                        <td>` + workday.hours + `</td>
+                                                    </tr>
+                                                    <tr class="px-2 py-2">
+                                                        <th>Observation</th>
+                                                        <td>` + workday.observation + `</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>`;
                         drawerWorkday.insertAdjacentHTML('beforeend', content);
+                    });
+
+                    drawerWorkday.querySelectorAll('#delete-work').forEach(item => {
+                        item.addEventListener('click', (e) => {
+                            let id = e.target.closest('#delete-work').getAttribute('dt-id');
+
+                            if(confirm('Are you sure want to delete this?')) {
+                                axios
+                                    .delete('/timesheet/' + id)
+                                    .then(res => {
+                                        axios
+                                            .get('/getWorkday?day=' + drawerHead.getAttribute('dt-day'))
+                                            .then(res => {
+                                                drawerWorkday.querySelector('div[dt-id="'+id+'"]').remove();
+                                                let timesheetRow = timesheet.querySelector('tr[dt-id="'+id+'"]');
+
+                                                if(timesheetRow.children[0].childNodes.length) {
+                                                    // is row with date
+                                                    let rowDay = timesheetRow.getAttribute('dt-day');
+                                                    let sameDayWork = timesheet.querySelectorAll('tr[dt-day="'+ rowDay +'"]');
+
+                                                    if(sameDayWork.length > 1) {
+                                                        // move date and edit button to next row
+
+                                                        // copy day to next row
+                                                        sameDayWork[1].querySelector('th').innerHTML = sameDayWork[0].querySelector('th').innerHTML;
+
+                                                        // copy action column to next row
+                                                        sameDayWork[1].querySelector('.sticky').innerHTML = sameDayWork[0].querySelector('.sticky').innerHTML
+                                               
+                                                        // delete row
+                                                        timesheet.querySelector('tr[dt-id="'+id+'"]').remove();
+                                                    } else {
+                                                        // empty this row
+                                                        timesheetRow.querySelectorAll('td').forEach(col => {
+                                                            if(!col.classList.contains('sticky')) { // skip edit button
+                                                                col.innerHTML = '';
+                                                            }
+                                                        });
+                                                    }
+                                                } else {
+                                                    // is not row with date
+                                                    timesheet.querySelector('tr[dt-id="'+id+'"]').remove();
+                                                }
+                                            })
+                                            .catch(err => alert(err));
+                                    })
+                                    .catch(err => alert(err));
+                            }
+                        });
                     });
                 })
                 .catch(err => alert(err));

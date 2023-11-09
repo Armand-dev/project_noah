@@ -108,7 +108,9 @@ class TimesheetController extends Controller
      */
     public function destroy(Timesheet $timesheet)
     {
-        //
+        $timesheet->delete();
+
+        return response()->json();
     }
 
     public function getEmptyTimesheet()
