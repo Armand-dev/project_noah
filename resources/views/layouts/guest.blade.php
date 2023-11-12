@@ -21,6 +21,8 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="{{env('APP_URL')}}:{{env('WEBSOCKET_PORT')}}/socket.io/socket.io.js"></script>
+
 </head>
 
 <body>

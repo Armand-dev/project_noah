@@ -17,8 +17,12 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 import Echo from 'laravel-echo';
 
-window.Echo = new Echo({
-    broadcaster: 'socket.io',
-    host: window.location.hostname + ':6003',
-    transports: ['websocket']
-});
+try {
+    window.Echo = new Echo({
+        broadcaster: 'socket.io',
+        host: window.location.hostname + ':6003',
+        transports: ['websocket']
+    });
+} catch (e) {
+    console.log('Could not connect to WS server!');
+}
