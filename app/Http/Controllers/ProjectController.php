@@ -20,8 +20,8 @@ class ProjectController extends Controller
             return [
                 $project->id,
                 $project->name,
-                $project->client->name,
-                'Edit'
+                $project->client->name ?? '-',
+                '<a dt-action="delete" dt-id="' . $project->id . '" class="flex-shrink-0 cursor-pointer text-red-500" aria-hidden="true">Delete</a>'
             ];
         });;
 
@@ -86,6 +86,8 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $project->delete();
+
+        return response()->json();
     }
 }

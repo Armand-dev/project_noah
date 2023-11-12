@@ -20,7 +20,7 @@ class ActivityController extends Controller
             return [
                 $activity->id,
                 $activity->name,
-                'Edit'
+                '<a dt-action="delete" dt-id="' . $activity->id . '" class="flex-shrink-0 cursor-pointer text-red-500" aria-hidden="true">Delete</a>'
             ];
         });;
 
@@ -83,6 +83,8 @@ class ActivityController extends Controller
      */
     public function destroy(Activity $activity)
     {
-        //
+        $activity->delete();
+
+        return response()->json();
     }
 }

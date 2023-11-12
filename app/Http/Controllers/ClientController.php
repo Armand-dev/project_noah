@@ -19,7 +19,7 @@ class ClientController extends Controller
             return [
                 $client->id,
                 $client->name,
-                'Edit'
+                '<a dt-action="delete" dt-id="' . $client->id . '" class="flex-shrink-0 cursor-pointer text-red-500" aria-hidden="true">Delete</a>'
             ];
         });;
 
@@ -83,6 +83,8 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        //
+        $client->delete();
+
+        return response()->json();
     }
 }

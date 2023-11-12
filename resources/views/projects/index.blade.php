@@ -18,4 +18,20 @@
         </div>
 
     </div>
+    <script>
+        document.querySelectorAll('[dt-action="delete"]').forEach(deleteBtn => {
+            deleteBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                if(confirm('Are you sure you want to perform this action?')) {
+                    let id = deleteBtn.getAttribute('dt-id');
+                    axios
+                        .delete('/project/' + id)
+                        .then(res => {
+                            window.location.reload();
+                        })
+                }
+            });
+        });
+    </script>
 </x-app-layout>
