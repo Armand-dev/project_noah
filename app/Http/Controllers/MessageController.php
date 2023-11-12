@@ -19,7 +19,7 @@ class MessageController extends Controller
         } else {
             $company = auth()->user()->employerCompany;
         }
-
+dd($company);
         return view('chat.index')
             ->with('company', $company);
     }
