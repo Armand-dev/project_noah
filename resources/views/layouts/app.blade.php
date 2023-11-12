@@ -21,7 +21,7 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script src="http://localhost:6003/socket.io/socket.io.js"></script>
+    <script src="{{env('APP_URL')}}/socket.io/socket.io.js"></script>
 </head>
 
 <body class="font-sans antialiased">
