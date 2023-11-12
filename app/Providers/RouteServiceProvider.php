@@ -29,6 +29,9 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         $this->routes(function () {
+
+            // TODO: subdomains for companies
+
             Route::middleware('api')
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));

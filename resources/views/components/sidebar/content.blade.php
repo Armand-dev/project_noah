@@ -147,9 +147,8 @@
     @if(auth()->user()->hasRole('leader'))
         <x-sidebar.link
             title="Reports"
-            href="{{ route('user.index') }}"
-            :isActive="request()->routeIs('')"
-            soon="true"
+            href="{{ route('report.index') }}"
+            :isActive="request()->routeIs('report.index')"
         >
             <x-slot name="icon">
                 <x-icons.reports class="flex-shrink-0 w-6 h-6" aria-hidden="true" />

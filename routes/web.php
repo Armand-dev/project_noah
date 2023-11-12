@@ -22,41 +22,39 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-// useless routes
-// Just to demo sidebar dropdown links active states.
-Route::get('/buttons/text', function () {
-    return view('buttons-showcase.text');
-})->middleware(['auth'])->name('buttons.text');
-
-Route::get('/buttons/icon', function () {
-    return view('buttons-showcase.icon');
-})->middleware(['auth'])->name('buttons.icon');
-
-Route::get('/buttons/text-icon', function () {
-    return view('buttons-showcase.text-icon');
-})->middleware(['auth'])->name('buttons.text-icon');
-
 require __DIR__ . '/auth.php';
 
 
 
 Route::middleware(['auth', 'verified'])->group(function() {
+
+    /** Profile Routes */
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    /** Timesheet Routes */
     Route::get('/getWorkday', [\App\Http\Controllers\TimesheetController::class, 'getWorkday']);
     Route::resource('timesheet', \App\Http\Controllers\TimesheetController::class);
 
+    /** User Routes */
     Route::resource('user', \App\Http\Controllers\UserController::class)->middleware('can:create users');
+
+    /** Client Routes */
     Route::resource('client', \App\Http\Controllers\ClientController::class)->middleware('can:create users');
+
+    /** Project Routes */
     Route::resource('project', \App\Http\Controllers\ProjectController::class)->middleware('can:create users');
+
+    /** Activity Routes */
     Route::resource('activity', \App\Http\Controllers\ActivityController::class)->middleware('can:create users');
 
     /** Chat Routes */
-    Route::get('chat', [\App\Http\Controllers\MessageController::class, 'index'])->name('chat.index');
-    Route::post('chat', [\App\Http\Controllers\MessageController::class, 'store'])->name('chat.store');
-    Route::get('getChat', [\App\Http\Controllers\MessageController::class, 'getChat'])->name('chat.get');
+    Route::get('c/hat', [\App\Http\Controllers\MessageController::class, 'index'])->name('chat.index');
+    Route::post('/chat', [\App\Http\Controllers\MessageController::class, 'store'])->name('chat.store');
+    Route::get('/getChat', [\App\Http\Controllers\MessageController::class, 'getChat'])->name('chat.get');
+
+    /** Report Routes */
+    Route::get('/report', [\App\Http\Controllers\ReportController::class, 'index'])->name('report.index');
+    Route::post('/report', [\App\Http\Controllers\ReportController::class, 'download'])->name('report.download');
 });
