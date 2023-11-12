@@ -145,7 +145,7 @@
             if(messageData.meta.is_myself) {
                 message = `
                         <li dt-scope="message" class="flex justify-end">
-                            <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-100 rounded shadow">
+                            <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-300 rounded shadow">
                                 <span class="block text-sm text-left">` + messageData.meta.sent_by.name + `</span>
                                 <span class="block">` + messageData.data.message + `</span>
                                 <span class="block text-right" style="font-size: 12px;">` + messageData.meta.sent_at + `</span>
@@ -155,7 +155,7 @@
             } else {
                 message = `
                         <li dt-scope="message" class="flex justify-start">
-                            <div class="relative max-w-xl px-4 py-2 text-gray-700 rounded shadow">
+                            <div class="relative max-w-xl px-4 py-2 text-gray-700 dark:bg-gray-100 rounded shadow">
                                 <span class="block text-sm text-left">` + messageData.meta.sent_by.name + `</span>
                                 <span class="block">` + messageData.data.message + `</span>
                                 <span class="block text-right" style="font-size: 12px;">` + messageData.meta.sent_at + `</span>
