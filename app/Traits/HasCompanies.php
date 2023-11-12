@@ -13,7 +13,7 @@ trait HasCompanies
         return $this->hasMany(Company::class);
     }
 
-    public function employeeCompany(): BelongsTo
+    public function employerCompany(): BelongsTo
     {
         return $this->belongsTo(Company::class, 'employer_company_id');
     }

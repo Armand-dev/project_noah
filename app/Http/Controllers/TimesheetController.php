@@ -20,29 +20,55 @@ class TimesheetController extends Controller
     public function index()
     {
         $headings = ['Day', 'Client', 'Project', 'Activity', 'Sub-activity', 'User', 'Hours',  'Obs', ''];
-        $timesheet = Timesheet::query()
-            ->whereDate('day', '>=', Carbon::today()->subYear())
-            ->get()
-            ->map(function ($work) {
-                $work['client'] = Client::find($work['client_id'])->name;
-                $work['project'] = Project::find($work['project_id'])->name;
-                $work['activity'] = Activity::find($work['activity_id'])->name;
-                $work['user'] = User::find($work['user_id'])->name;
 
-                return $work;
-            })
-            ->groupBy(function($timesheet) {
-                return $timesheet->day;
-            });
+        if (auth()->user()->hasRole('leader')) {
+            $timesheet = Timesheet::query()
+                ->whereDate('day', '>=', Carbon::today()->subYear())
+                ->get()
+                ->map(function ($work) {
+                    $work['client'] = Client::find($work['client_id'])->name;
+                    $work['project'] = Project::find($work['project_id'])->name;
+                    $work['activity'] = Activity::find($work['activity_id'])->name;
+                    $work['user'] = User::find($work['user_id'])->name;
+
+                    return $work;
+                })
+                ->groupBy(function($timesheet) {
+                    return $timesheet->day;
+                });
+
+            $clients = auth()->user()->companies()->first()->clients;
+            $projects = auth()->user()->companies()->first()->projects;
+            $activities = auth()->user()->companies()->first()->activities;
+        } else {
+            $timesheet = auth()->user()->timesheets()
+                ->whereDate('day', '>=', Carbon::today()->subYear())
+                ->get()
+                ->map(function ($work) {
+                    $work['client'] = Client::find($work['client_id'])->name;
+                    $work['project'] = Project::find($work['project_id'])->name;
+                    $work['activity'] = Activity::find($work['activity_id'])->name;
+                    $work['user'] = User::find($work['user_id'])->name;
+
+                    return $work;
+                })
+                ->groupBy(function($timesheet) {
+                    return $timesheet->day;
+                });
+
+            $clients = auth()->user()->employerCompany->clients;
+            $projects = auth()->user()->employerCompany->projects;
+            $activities = auth()->user()->employerCompany->activities;
+        }
 
         $timesheet = $this->fillTimesheet($timesheet);
 
         return view('timesheet.index')
             ->with('headings', $headings)
             ->with('timesheet', $timesheet)
-            ->with('clients', auth()->user()->companies()->first()->clients)
-            ->with('projects', auth()->user()->companies()->first()->projects)
-            ->with('activities', auth()->user()->companies()->first()->activities);
+            ->with('clients', $clients)
+            ->with('projects', $projects)
+            ->with('activities', $activities);
     }
 
     /**
@@ -63,9 +89,15 @@ class TimesheetController extends Controller
             'project_id' => ['required', 'numeric', 'exists:App\\Models\\Project,id'],
             'activity_id' => ['required', 'numeric', 'exists:App\\Models\\Activity,id'],
             'hours' => ['required', 'numeric'],
-            'observations' => ['string', 'max:1000'],
+            'observations' => ['max:1000'],
             'day' => ['required', 'date'],
         ]);
+
+        if (auth()->user()->hasRole('leader')) {
+            $company = auth()->user()->companies()->first();
+        } else {
+            $company = auth()->user()->employerCompany;
+        }
 
         $timesheet = Timesheet::create([
             'user_id' => auth()->user()->id,
@@ -73,9 +105,9 @@ class TimesheetController extends Controller
             'project_id' => $request->project_id,
             'activity_id' => $request->activity_id,
             'hours' => $request->hours,
-            'observations' => $request->observations,
+            'observations' => $request->observations ?? '',
             'day' => $request->day,
-            'company_id' => auth()->user()->companies()->first()->id,
+            'company_id' => $company->id,
         ]);
 
         $timesheet->client = Client::find($timesheet->client_id)->name;
@@ -171,16 +203,29 @@ class TimesheetController extends Controller
             return response()->json([], 403);
         }
 
-        $workday = Timesheet::query()
-            ->where('day', $day)
-            ->get()
-            ->map(function ($work) {
-                $work['client'] = Client::find($work['client_id'])->name;
-                $work['project'] = Project::find($work['project_id'])->name;
-                $work['activity'] = Activity::find($work['activity_id'])->name;
+        if (auth()->user()->hasRole('leader')) {
+            $workday = Timesheet::query()
+                ->where('day', $day)
+                ->get()
+                ->map(function ($work) {
+                    $work['client'] = Client::find($work['client_id'])->name;
+                    $work['project'] = Project::find($work['project_id'])->name;
+                    $work['activity'] = Activity::find($work['activity_id'])->name;
 
-                return $work;
-            });
+                    return $work;
+                });
+        } else {
+            $workday = auth()->user()->timesheets()
+                ->where('day', $day)
+                ->get()
+                ->map(function ($work) {
+                    $work['client'] = Client::find($work['client_id'])->name;
+                    $work['project'] = Project::find($work['project_id'])->name;
+                    $work['activity'] = Activity::find($work['activity_id'])->name;
+
+                    return $work;
+                });
+        }
         return response()->json($workday);
     }
 }
