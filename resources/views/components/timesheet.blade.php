@@ -301,6 +301,8 @@
         drawerWorkday.scrollTop = drawerWorkday.scrollHeight;
 
         drawerWorkday.querySelector('#save-work').addEventListener('click', (e) => {
+            let day = drawerHead.getAttribute('dt-day');
+
             axios
                 .post('/timesheet', {
                     client_id: drawerWorkday.querySelector('[name="client"]').value,
@@ -320,6 +322,64 @@
                             });
                         })
                         .catch(err => alert(err));
+
+
+                    let timesheetRows = timesheet.querySelectorAll('tr[dt-day="'+day+'"]');
+                    console.log(timesheetRows);
+
+                    if(timesheetRows.length > 1 || (timesheetRows.length == 1 && timesheetRows[0].getAttribute('dt-id'))) {
+                        // append new row after last
+                        let newRow = timesheetRows[timesheetRows.length - 1].cloneNode(true);
+                        newRow.setAttribute('dt-id', res.data.id);
+                        newRow.querySelector('[dt-col="day"]').innerHTML = '';
+                        newRow.querySelector('[dt-col="client"]').innerHTML = res.data.client;
+                        newRow.querySelector('[dt-col="project"]').innerHTML = res.data.project;
+                        newRow.querySelector('[dt-col="activity"]').innerHTML = res.data.activity;
+                        newRow.querySelector('[dt-col="subactivity"]').innerHTML = res.data.subactivity;
+                        newRow.querySelector('[dt-col="user"]').innerHTML = res.data.user;
+                        newRow.querySelector('[dt-col="hours"]').innerHTML = res.data.hours;
+
+                        timesheetRows[timesheetRows.length - 1].parentNode.insertBefore(newRow, timesheetRows[timesheetRows.length - 1].nextSibling);
+                    } else {
+                        timesheetRow = timesheetRows[0];
+
+                        timesheetRow.setAttribute('dt-id', res.data.id);
+                        timesheetRow.querySelector('[dt-col="client"]').innerHTML = res.data.client;
+                        timesheetRow.querySelector('[dt-col="project"]').innerHTML = res.data.project;
+                        timesheetRow.querySelector('[dt-col="activity"]').innerHTML = res.data.activity;
+                        timesheetRow.querySelector('[dt-col="subactivity"]').innerHTML = res.data.subactivity;
+                        timesheetRow.querySelector('[dt-col="user"]').innerHTML = res.data.user;
+                        timesheetRow.querySelector('[dt-col="hours"]').innerHTML = res.data.hours;
+                    }
+
+                    // if(timesheetRow.children[0].childNodes.length) {
+                    //     // is row with date
+                    //     let rowDay = timesheetRow.getAttribute('dt-day');
+                    //     let sameDayWork = timesheet.querySelectorAll('tr[dt-day="'+ rowDay +'"]');
+                    //
+                    //     if(sameDayWork.length > 1) {
+                    //         // move date and edit button to next row
+                    //
+                    //         // copy day to next row
+                    //         sameDayWork[1].querySelector('th').innerHTML = sameDayWork[0].querySelector('th').innerHTML;
+                    //
+                    //         // copy action column to next row
+                    //         sameDayWork[1].querySelector('.sticky').innerHTML = sameDayWork[0].querySelector('.sticky').innerHTML
+                    //
+                    //         // delete row
+                    //         timesheet.querySelector('tr[dt-id="'+id+'"]').remove();
+                    //     } else {
+                    //         // empty this row
+                    //         timesheetRow.querySelectorAll('td').forEach(col => {
+                    //             if(!col.classList.contains('sticky')) { // skip edit button
+                    //                 col.innerHTML = '';
+                    //             }
+                    //         });
+                    //     }
+                    // } else {
+                    //     // is not row with date
+                    //     timesheet.querySelector('tr[dt-id="'+id+'"]').remove();
+                    // }
                 })
                 .catch(err => alert(Object.entries(err.response.data.errors).join("\n")));
         });

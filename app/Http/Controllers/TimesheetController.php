@@ -76,6 +76,11 @@ class TimesheetController extends Controller
             'company_id' => auth()->user()->companies()->first()->id,
         ]);
 
+        $timesheet->client = Client::find($timesheet->client_id)->name;
+        $timesheet->project = Project::find($timesheet->project_id)->name;
+        $timesheet->activity = Activity::find($timesheet->activity_id)->name;
+        $timesheet->user = User::find($timesheet->user_id)->name;
+
         return response()->json($timesheet);
     }
 
