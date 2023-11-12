@@ -5,6 +5,23 @@
 >
 {{--    <span class="text-gray-500 bg-gray-100 rounded p-2"><span class="text-xs">Company:</span> <br><span class="text-sm font-semibold">{{ auth()->user()->companies()->first()->name }}</span></span>--}}
 
+    <x-sidebar.link
+        title="Dashboard"
+        href="{{ route('dashboard') }}"
+        :isActive="request()->routeIs('dashboard')"
+    >
+        <x-slot name="icon">
+            <x-icons.dashboard class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
+
+    <div
+        x-transition
+        x-show="isSidebarOpen || isSidebarHovered"
+        class="text-sm text-gray-500"
+    >
+            Tasks
+    </div>
 
     <x-sidebar.link
         title="Timesheet"
@@ -52,25 +69,15 @@
 {{--        />--}}
 {{--    </x-sidebar.dropdown>--}}
 
-    <div
-        x-transition
-        x-show="isSidebarOpen || isSidebarHovered"
-        class="text-sm text-gray-500"
-    >
-        Admin
-    </div>
-
-
-    <x-sidebar.link
-        title="Dashboard"
-                href="{{ route('dashboard') }}"
-        :isActive="request()->routeIs('dashboard')"
-    >
-        <x-slot name="icon">
-            <x-icons.dashboard class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-        </x-slot>
-    </x-sidebar.link>
-
+    @if(auth()->user()->hasRole('leader'))
+        <div
+            x-transition
+            x-show="isSidebarOpen || isSidebarHovered"
+            class="text-sm text-gray-500"
+        >
+            Admin
+        </div>
+    @endif
     @if(auth()->user()->hasPermissionTo('create users'))
         <x-sidebar.link
             title="Users"
@@ -83,7 +90,7 @@
         </x-sidebar.link>
     @endif
 
-    @if(auth()->user()->hasPermissionTo('create users'))
+    @if(auth()->user()->hasRole('leader'))
         <x-sidebar.link
             title="Clients"
             href="{{ route('client.index') }}"
@@ -95,7 +102,7 @@
         </x-sidebar.link>
     @endif
 
-    @if(auth()->user()->hasPermissionTo('create users'))
+    @if(auth()->user()->hasRole('leader'))
         <x-sidebar.link
             title="Projects"
             href="{{ route('project.index') }}"
@@ -107,7 +114,7 @@
         </x-sidebar.link>
     @endif
 
-    @if(auth()->user()->hasPermissionTo('create users'))
+    @if(auth()->user()->hasRole('leader'))
         <x-sidebar.link
             title="Activities"
             href="{{ route('activity.index') }}"
@@ -119,6 +126,7 @@
         </x-sidebar.link>
     @endif
 
+    @if(auth()->user()->hasRole('leader'))
         <x-sidebar.link
             title="Reports"
             href="{{ route('user.index') }}"
@@ -129,6 +137,7 @@
                 <x-icons.reports class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
             </x-slot>
         </x-sidebar.link>
+    @endif
 
 
 {{--    @php--}}
