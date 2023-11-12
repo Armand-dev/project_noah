@@ -45,10 +45,10 @@ class TimesheetController extends Controller
                 ->whereDate('day', '>=', Carbon::today()->subYear())
                 ->get()
                 ->map(function ($work) {
-                    $work['client'] = Client::find($work['client_id'])->name;
-                    $work['project'] = Project::find($work['project_id'])->name;
-                    $work['activity'] = Activity::find($work['activity_id'])->name;
-                    $work['user'] = User::find($work['user_id'])->name;
+                    $work['client'] = Client::withTrashed()->find($work['client_id'])->name;
+                    $work['project'] = Project::withTrashed()->find($work['project_id'])->name;
+                    $work['activity'] = Activity::withTrashed()->find($work['activity_id'])->name;
+                    $work['user'] = User::withTrashed()->find($work['user_id'])->name;
 
                     return $work;
                 })

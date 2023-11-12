@@ -69,6 +69,24 @@
 {{--        />--}}
 {{--    </x-sidebar.dropdown>--}}
 
+    <div
+        x-transition
+        x-show="isSidebarOpen || isSidebarHovered"
+        class="text-sm text-gray-500"
+    >
+        Communication
+    </div>
+
+    <x-sidebar.link
+        title="Company chat"
+        href="{{ route('chat.index') }}"
+        :isActive="request()->routeIs('chat.index')"
+    >
+        <x-slot name="icon">
+            <x-icons.chat class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
+
     @if(auth()->user()->hasRole('leader'))
         <div
             x-transition

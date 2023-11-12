@@ -28,7 +28,7 @@ class UserController extends Controller
                     <a
                         href="/user/'.$user->id.'"
                     >
-                        <img style="display:inline; width: 30px;" src="https://ui-avatars.com/api/?name='.$avatarName.'"> '.$user->name.'
+                        <img style="display:inline; width: 30px;" src="https://ui-avatars.com/api/?background=random&name='.$avatarName.'"> '.$user->name.'
                     </a>
                 </span>';
 
