@@ -1,0 +1,62 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+// useless routes
+// Just to demo sidebar dropdown links active states.
+Route::get('/buttons/text', function () {
+    return view('buttons-showcase.text');
+})->middleware(['auth'])->name('buttons.text');
+
+Route::get('/buttons/icon', function () {
+    return view('buttons-showcase.icon');
+})->middleware(['auth'])->name('buttons.icon');
+
+Route::get('/buttons/text-icon', function () {
+    return view('buttons-showcase.text-icon');
+})->middleware(['auth'])->name('buttons.text-icon');
+
+require __DIR__ . '/auth.php';
+
+
+
+Route::middleware(['auth', 'verified'])->group(function() {
+    Route::get('/getWorkday', [\App\Http\Controllers\TimesheetController::class, 'getWorkday']);
+    Route::resource('timesheet', \App\Http\Controllers\TimesheetController::class);
+
+    Route::resource('user', \App\Http\Controllers\UserController::class)->middleware('can:create users');
+    Route::resource('client', \App\Http\Controllers\ClientController::class)->middleware('can:create users');
+    Route::resource('project', \App\Http\Controllers\ProjectController::class)->middleware('can:create users');
+    Route::resource('activity', \App\Http\Controllers\ActivityController::class)->middleware('can:create users');
+
+    /** Chat Routes */
+    Route::get('chat', [\App\Http\Controllers\MessageController::class, 'index'])->name('chat.index');
+    Route::post('chat', [\App\Http\Controllers\MessageController::class, 'store'])->name('chat.store');
+    Route::get('getChat', [\App\Http\Controllers\MessageController::class, 'getChat'])->name('chat.get');
+});
