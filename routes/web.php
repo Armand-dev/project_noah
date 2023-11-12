@@ -50,7 +50,7 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::resource('activity', \App\Http\Controllers\ActivityController::class)->middleware('can:create users');
 
     /** Chat Routes */
-    Route::get('c/hat', [\App\Http\Controllers\MessageController::class, 'index'])->name('chat.index');
+    Route::get('/chat', [\App\Http\Controllers\MessageController::class, 'index'])->name('chat.index');
     Route::post('/chat', [\App\Http\Controllers\MessageController::class, 'store'])->name('chat.store');
     Route::get('/getChat', [\App\Http\Controllers\MessageController::class, 'getChat'])->name('chat.get');
 
