@@ -19,7 +19,7 @@ class TimesheetController extends Controller
      */
     public function index()
     {
-        $headings = ['Day', 'Client', 'Project', 'Activity', 'Sub-activity', 'User', 'Hours', ''];
+        $headings = ['Day', 'Client', 'Project', 'Activity', 'Sub-activity', 'User', 'Hours',  'Obs', ''];
         $timesheet = Timesheet::query()
             ->whereDate('day', '>=', Carbon::today()->subYear())
             ->get()
@@ -63,6 +63,7 @@ class TimesheetController extends Controller
             'project_id' => ['required', 'numeric', 'exists:App\\Models\\Project,id'],
             'activity_id' => ['required', 'numeric', 'exists:App\\Models\\Activity,id'],
             'hours' => ['required', 'numeric'],
+            'observations' => ['string', 'max:1000'],
             'day' => ['required', 'date'],
         ]);
 
@@ -72,6 +73,7 @@ class TimesheetController extends Controller
             'project_id' => $request->project_id,
             'activity_id' => $request->activity_id,
             'hours' => $request->hours,
+            'observations' => $request->observations,
             'day' => $request->day,
             'company_id' => auth()->user()->companies()->first()->id,
         ]);
