@@ -43,8 +43,22 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    /**
+     * The channels the user receives notification broadcasts on.
+     */
+    public function receivesBroadcastNotificationsOn(): string
+    {
+        return 'users.'.$this->id;
+    }
+
     public function timesheets(): HasMany
     {
         return $this->hasMany(Timesheet::class);
     }
+
+    public function notifications()
+    {
+        return $this->morphMany(\Illuminate\Notifications\DatabaseNotification::class, 'notifiable')->orderBy('created_at','ASC');
+    }
+
 }

@@ -9,8 +9,7 @@ trait ExportsReports
 {
     public function download(Request $request)
     {
-        dd($request->all());
-        if (!in_array(\request()->query('report'), self::REPORTS))
+        if (!in_array($request->query('report'), self::REPORTS))
         {
             return abort(404);
         }
@@ -20,9 +19,14 @@ trait ExportsReports
             return abort(403);
         }
 
-        return $this->{'report' . \request()->query('report')}(
-            \request()->query('start') ?? Carbon::now()->subMonth(),
-            \request()->query('end') ?? Carbon::now()
-        );
+        return $this->{'report' . \request()->query('report')}($request->all());
+    }
+
+    public function getReportFileName(string $extension = 'xlsx'): string
+    {
+        $reportName = debug_backtrace()[1]['function'];
+        $date = Carbon::now()->format('Y-m-d_h-i-s');
+
+        return $date . '_' . $reportName . '.' . $extension;
     }
 }

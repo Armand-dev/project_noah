@@ -34,6 +34,7 @@
         <div class="min-h-screen text-gray-900 bg-gray-100 dark:bg-dark-eval-0 dark:text-gray-200">
             <!-- Sidebar -->
             <x-sidebar.sidebar />
+            <x-notifications />
 
             <!-- Page Wrapper -->
             <div

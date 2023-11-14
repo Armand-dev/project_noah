@@ -11,6 +11,7 @@
 
         <div class="relative overflow-x-auto">
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                <!-- Report W-001 -->
                 <div class="border rounded p-4 bg-white shadow-md dark:bg-gray-700 dark:border-gray-500">
                     <div class="text-left text-gray-700 font-bold text-lg dark:text-gray-100">
                         Report W-001
@@ -20,6 +21,52 @@
                     </div>
                     <div class="text-left text-gray-700 text-sm mt-4 dark:text-gray-100">Displays worked hours by specific human resources, split between different projects and activities. Perfect for work overview and help create customer invoices.</div>
                 </div>
+
+
+                <!-- Report W-002 -->
+                <div class="border rounded p-4 bg-white shadow-md dark:bg-gray-700 dark:border-gray-500">
+                    <div class="text-left text-gray-700 font-bold text-lg dark:text-gray-100">
+                        Report W-002
+{{--                        <button  onclick="modalW002Handler(true)" class="text-sm bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded float-right">--}}
+{{--                            Download--}}
+{{--                        </button>--}}
+                    </div>
+                    <div class="text-left text-gray-700 text-sm mt-4 dark:text-gray-100">Displays worked hours by specific human resources, split between different projects and activities. Perfect for work overview and help create customer invoices.</div>
+                </div>
+
+                <!-- Report W-003 -->
+                <div class="border rounded p-4 bg-white shadow-md dark:bg-gray-700 dark:border-gray-500">
+                    <div class="text-left text-gray-700 font-bold text-lg dark:text-gray-100">
+                        Report W-003
+{{--                        <button  onclick="modalW002Handler(true)" class="text-sm bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded float-right">--}}
+{{--                            Download--}}
+{{--                        </button>--}}
+                    </div>
+                    <div class="text-left text-gray-700 text-sm mt-4 dark:text-gray-100">Displays worked hours by specific human resources, split between different projects and activities. Perfect for work overview and help create customer invoices.</div>
+                </div>
+
+                <!-- Report W-004 -->
+                <div class="border rounded p-4 bg-white shadow-md dark:bg-gray-700 dark:border-gray-500">
+                    <div class="text-left text-gray-700 font-bold text-lg dark:text-gray-100">
+                        Report W-004
+{{--                        <button  onclick="modalW002Handler(true)" class="text-sm bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded float-right">--}}
+{{--                            Download--}}
+{{--                        </button>--}}
+                    </div>
+                    <div class="text-left text-gray-700 text-sm mt-4 dark:text-gray-100">Displays worked hours by specific human resources, split between different projects and activities. Perfect for work overview and help create customer invoices.</div>
+                </div>
+
+                <!-- Report W-005 -->
+                <div class="border rounded p-4 bg-white shadow-md dark:bg-gray-700 dark:border-gray-500">
+                    <div class="text-left text-gray-700 font-bold text-lg dark:text-gray-100">
+                        Report W-005
+{{--                        <button  onclick="modalW002Handler(true)" class="text-sm bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded float-right">--}}
+{{--                            Download--}}
+{{--                        </button>--}}
+                    </div>
+                    <div class="text-left text-gray-700 text-sm mt-4 dark:text-gray-100">Displays worked hours by specific human resources, split between different projects and activities. Perfect for work overview and help create customer invoices.</div>
+                </div>
+
             </div>
         </div>
 
@@ -75,7 +122,7 @@
                                 @endforeach
                             </div>
                         </div>
-                        <button type="submit" dt-report="W-001" class="text-white inline-flex items-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                        <button type="submit" id="downloadW001" dt-report="W-001" class="text-white inline-flex items-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                             Download
                         </button>
                     </form>
@@ -116,35 +163,35 @@
             }
         }
 
-        document.querySelectorAll('button[type="submit"]').forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
+        document.querySelector('#downloadW001').addEventListener('click', (e) => {
+            e.preventDefault();
 
-                let startDate = modalW001.querySelector('[name="start_date"]').value;
-                let endDate = modalW001.querySelector('[name="end_date"]').value;
-                let projects = [];
-                let users = [];
+            let startDate = modalW001.querySelector('[name="start_date"]').value;
+            let endDate = modalW001.querySelector('[name="end_date"]').value;
+            let projects = [];
+            let users = [];
 
-                modalW001.querySelectorAll('[name="projects[]"]:checked').forEach(project => {
-                    projects.push(project.value);
-                });
-
-                modalW001.querySelectorAll('[name="users[]"]:checked').forEach(user => {
-                    users.push(user.value);
-                });
-
-                axios
-                    .post('/report?report=W-001', {
-                        'startDate': startDate,
-                        'endDate': startDate,
-                        'projects': startDate,
-                        'users': startDate,
-                    })
-                    .then(res => {
-                        console.log('download started');
-                    })
-                    .catch(err => alert(err));
+            modalW001.querySelectorAll('[name="projects[]"]:checked').forEach(project => {
+                projects.push(project.value);
             });
+
+            modalW001.querySelectorAll('[name="users[]"]:checked').forEach(user => {
+                users.push(user.value);
+            });
+
+            fadeOut(modalW001);
+
+            axios
+                .post('/report?report=W001', {
+                    'startDate': startDate,
+                    'endDate': startDate,
+                    'projects': projects,
+                    'users': users,
+                })
+                .then(res => {
+                    alert(res.data.message);
+                })
+                .catch(err => alert(err));
         });
 
 

@@ -57,4 +57,7 @@ Route::middleware(['auth', 'verified'])->group(function() {
     /** Report Routes */
     Route::get('/report', [\App\Http\Controllers\ReportController::class, 'index'])->name('report.index');
     Route::post('/report', [\App\Http\Controllers\ReportController::class, 'download'])->name('report.download');
+
+    /** Notification Routes */
+    Route::get('/notifications', [\App\Http\Controllers\UserController::class, 'getNotifications'])->name('notifications.get');
 });

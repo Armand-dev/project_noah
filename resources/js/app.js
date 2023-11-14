@@ -9,7 +9,12 @@ window.PerfectScrollbar = PerfectScrollbar
 document.addEventListener('alpine:init', () => {
     Alpine.data('mainState', () => {
         let lastScrollTop = 0
+        let notification = document.getElementById("notification");
+        let checdiv = document.getElementById("chec-div");
+        let flag3 = false;
+
         const init = function () {
+            notificationHandler();
             window.addEventListener('scroll', () => {
                 let st =
                     window.pageYOffset || document.documentElement.scrollTop
@@ -30,7 +35,6 @@ document.addEventListener('alpine:init', () => {
                 lastScrollTop = st <= 0 ? 0 : st // For Mobile or negative scrolling
             })
         }
-
         const getTheme = () => {
             if (window.localStorage.getItem('dark')) {
                 return JSON.parse(window.localStorage.getItem('dark'))
@@ -43,12 +47,33 @@ document.addEventListener('alpine:init', () => {
         const setTheme = (value) => {
             window.localStorage.setItem('dark', value)
         }
+        const notificationHandler = () => {
+            if (!flag3) {
+                notification.classList.add("translate-x-full");
+                notification.classList.remove("translate-x-0");
+                setTimeout(function () {
+                    checdiv.classList.add("hidden");
+                }, 100);
+                flag3 = true;
+            } else {
+                setTimeout(function () {
+                    notification.classList.remove("translate-x-full");
+                    notification.classList.add("translate-x-0");
+                }, 100);
+                checdiv.classList.remove("hidden");
+                flag3 = false;
+            }
+        };
+
         return {
             init,
             isDarkMode: getTheme(),
             toggleTheme() {
                 this.isDarkMode = !this.isDarkMode
                 setTheme(this.isDarkMode)
+            },
+            toggleNotificationDrawer() {
+                notificationHandler(false);
             },
             isSidebarOpen: window.innerWidth > 1024,
             isSidebarHovered: false,
