@@ -33,7 +33,7 @@ class ReportController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Export started.'
+            'message' => 'Export started. Check the notifications bell.'
         ]);
     }
 }
