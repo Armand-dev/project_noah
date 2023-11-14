@@ -37,7 +37,7 @@ class ReportW001 implements FromQuery, ShouldQueue, WithHeadings, ShouldAutoSize
             ->whereHas('project', function (Builder $query){
                 $query->whereIn('id', $this->params['projects']);
             })
-            ->whereBetween('timesheets.day', [Carbon::parse($this->params['startDate'])->startOfDay(),Carbon::parse($this->params['endDate'])->endOfDay() ])
+//            ->whereBetween('timesheets.day', [Carbon::parse($this->params['startDate'])->startOfDay(),Carbon::parse($this->params['endDate'])->endOfDay() ])
             ->select([
                 'clients.name AS client_name',
                 'projects.name AS project_name',

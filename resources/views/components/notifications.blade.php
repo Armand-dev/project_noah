@@ -205,7 +205,7 @@
     Echo.private('users.{{ auth()->user()->id }}')
         .notification(notification => {
             addNotification(notification);
-            
+
             // showToast(notification);
         });
 </script>
