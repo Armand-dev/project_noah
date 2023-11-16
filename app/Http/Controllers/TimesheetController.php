@@ -22,31 +22,46 @@ class TimesheetController extends Controller
         $headings = ['Day', 'Client', 'Project', 'Activity', 'Sub-activity', 'User', 'Hours',  'Obs', ''];
 
         if (auth()->user()->hasRole('leader')) {
+            $company = auth()->user()->companies()->first();
+            $clients = $company->clients()->withTrashed()->get();
+            $projects = $company->projects()->withTrashed()->get();
+            $activities = $company->activities()->withTrashed()->get();
+            $users = $company->employees()->withTrashed()->get();
+
             $timesheet = Timesheet::query()
-                ->whereHas('company', function ($query){
-                    $query->where('id', auth()->user()->companies()->first()->id);
+                ->whereHas('company', function ($query) use ($company) {
+                    $query->where('id', $company->id);
                 })
                 ->whereDate('day', '>=', Carbon::today()->subYear())
                 ->get()
-                ->map(function ($work) {
-                    $work['client'] = Client::withTrashed()->find($work['client_id'])->name;
-                    $work['project'] = Project::withTrashed()->find($work['project_id'])->name;
-                    $work['activity'] = Activity::withTrashed()->find($work['activity_id'])->name;
-                    $work['user'] = User::withTrashed()->find($work['user_id'])->name;
+                ->map(function ($work) use ($users, $projects, $activities, $clients) {
+                    $work['client'] = $clients->first(function ($item) use ($work) {
+                        return $item->id === $work['client_id'];
+                    })->name;
+                    $work['project'] = $projects->first(function ($item) use ($work) {
+                        return $item->id === $work['project_id'];
+                    })->name;
+                    $work['activity'] = $activities->first(function ($item) use ($work) {
+                        return $item->id === $work['activity_id'];
+                    })->name;
+                    $work['user'] = $users->first(function ($item) use ($work) {
+                        return $item->id === $work['user_id'];
+                    })->name;
 
                     return $work;
                 })
                 ->groupBy(function($timesheet) {
                     return $timesheet->day;
                 });
-
-            $clients = auth()->user()->companies()->first()->clients;
-            $projects = auth()->user()->companies()->first()->projects;
-            $activities = auth()->user()->companies()->first()->activities;
         } else {
+            $company = auth()->user()->employerCompany;
+            $clients = $company->clients;
+            $projects = $company->projects;
+            $activities = $company->activities;
+
             $timesheet = auth()->user()->timesheets()
-                ->whereHas('company', function ($query){
-                    $query->where('id', auth()->user()->employerCompany->id);
+                ->whereHas('company', function ($query) use ($company) {
+                    $query->where('id', $company->id);
                 })
                 ->whereDate('day', '>=', Carbon::today()->subYear())
                 ->get()
@@ -61,10 +76,6 @@ class TimesheetController extends Controller
                 ->groupBy(function($timesheet) {
                     return $timesheet->day;
                 });
-
-            $clients = auth()->user()->employerCompany->clients;
-            $projects = auth()->user()->employerCompany->projects;
-            $activities = auth()->user()->employerCompany->activities;
         }
 
         $timesheet = $this->fillTimesheet($timesheet);
