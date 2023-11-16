@@ -23,7 +23,7 @@ class ProjectController extends Controller
                 $project->client->name ?? '-',
                 '<a dt-action="delete" dt-id="' . $project->id . '" class="flex-shrink-0 cursor-pointer text-red-500" aria-hidden="true">Delete</a>'
             ];
-        });;
+        });
 
         return view('projects.index')
             ->with('heading', $heading)

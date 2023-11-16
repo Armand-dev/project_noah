@@ -23,6 +23,9 @@ class TimesheetController extends Controller
 
         if (auth()->user()->hasRole('leader')) {
             $timesheet = Timesheet::query()
+                ->whereHas('company', function ($query){
+                    $query->where('id', auth()->user()->companies()->first()->id);
+                })
                 ->whereDate('day', '>=', Carbon::today()->subYear())
                 ->get()
                 ->map(function ($work) {
@@ -42,6 +45,9 @@ class TimesheetController extends Controller
             $activities = auth()->user()->companies()->first()->activities;
         } else {
             $timesheet = auth()->user()->timesheets()
+                ->whereHas('company', function ($query){
+                    $query->where('id', auth()->user()->employerCompany->id);
+                })
                 ->whereDate('day', '>=', Carbon::today()->subYear())
                 ->get()
                 ->map(function ($work) {

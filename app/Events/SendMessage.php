@@ -35,7 +35,7 @@ class SendMessage implements ShouldBroadcastNow
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('companies.0561fa26-21db-44f3-a5db-d4f4dc81cff7'),
+            new PrivateChannel('companies.' . $this->message->company_uuid),
         ];
     }
 

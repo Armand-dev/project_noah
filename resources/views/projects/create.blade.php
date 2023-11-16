@@ -61,7 +61,7 @@
                                 placeholder="{{ __('Client') }}"
 
                             >
-                                @foreach(auth()->user()->companies()->first()->clients as $client)
+                                @foreach(auth()->user()->companies()->first()->clients()->orderBy('name')->get() as $client)
                                     <option value="{{ $client->id }}">{{ $client->name }}</option>
                                 @endforeach
                             </select>

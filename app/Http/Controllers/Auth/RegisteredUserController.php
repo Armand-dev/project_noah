@@ -47,9 +47,13 @@ class RegisteredUserController extends Controller
 
         $user->assignRole('leader');
 
-        $user->companies()->create([
+        $company = $user->companies()->create([
             'name' => $request->company_name,
             'uuid' => Str::uuid(),
+        ]);
+
+        $user->update([
+            'employer_company_id' => $company->id
         ]);
 
         event(new Registered($user));

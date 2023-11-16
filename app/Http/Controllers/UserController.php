@@ -22,7 +22,18 @@ class UserController extends Controller
             'Role',
             'Actions',
         ];
-        $users = User::all()->map(function ($user){
+
+        if (auth()->user()->hasRole('leader')) {
+            $company = auth()->user()->companies()->first();
+        } else {
+            $company = auth()->user()->employerCompany;
+        }
+
+
+        $users = User::all()
+            ->where('employer_company_id', $company->id)
+            ->where('employer_company_id', $company->id)
+            ->map(function ($user){
             $avatarName = str_replace(' ', '+', $user->name);
             $nameColumn =
                 '<span>
