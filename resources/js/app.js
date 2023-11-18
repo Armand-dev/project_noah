@@ -3,6 +3,8 @@ import './bootstrap'
 import Alpine from 'alpinejs'
 import collapse from '@alpinejs/collapse'
 import PerfectScrollbar from 'perfect-scrollbar'
+import Toastify from 'toastify-js';
+import TomSelect from 'tom-select';
 
 window.PerfectScrollbar = PerfectScrollbar
 
@@ -99,3 +101,5 @@ document.addEventListener('alpine:init', () => {
 Alpine.plugin(collapse)
 
 Alpine.start()
+
+window.TomSelect = TomSelect;

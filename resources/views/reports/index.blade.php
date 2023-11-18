@@ -105,21 +105,19 @@
                             </div>
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="projects" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Projects</label>
-                                @foreach($projects as $project)
-                                    <div class="flex items-center mb-4">
-                                        <input id="{{ $project->name }}" type="checkbox" name="projects[]" value="{{ $project->id }}" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        <label for="{{ $project->name }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $project->name }}</label>
-                                    </div>
-                                @endforeach
+                                <select id="select-projects" name="projects[]" multiple placeholder="Select projects..." autocomplete="off">
+                                    @foreach($projects as $project)
+                                        <option value="{{ $project->id }}">{{ $project->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="users" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Users</label>
-                                @foreach($users as $user)
-                                    <div class="flex items-center mb-4">
-                                        <input id="{{ $user->name }}" type="checkbox" name="users[]" value="{{ $user->id }}" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        <label for="{{ $user->name }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $user->name }}</label>
-                                    </div>
-                                @endforeach
+                                <select id="select-users" name="users[]" multiple placeholder="Select users..." autocomplete="off">
+                                    @foreach($users as $user)
+                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <button type="submit" id="downloadW001" dt-report="W-001" class="text-white inline-flex items-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
@@ -171,13 +169,17 @@
             let projects = [];
             let users = [];
 
-            modalW001.querySelectorAll('[name="projects[]"]:checked').forEach(project => {
-                projects.push(project.value);
-            });
+            for (const option of modalW001.querySelector('[name="projects[]"]').options) {
+                if (option.selected) {
+                    projects.push(option.value);
+                }
+            }
 
-            modalW001.querySelectorAll('[name="users[]"]:checked').forEach(user => {
-                users.push(user.value);
-            });
+            for (const option of modalW001.querySelector('[name="users[]"]').options) {
+                if (option.selected) {
+                    users.push(option.value);
+                }
+            }
 
             fadeOut(modalW001);
 
@@ -193,7 +195,9 @@
                 })
                 .catch(err => alert(err));
         });
-
-
+    </script>
+    <script type="module">
+        new TomSelect("#select-projects", {});
+        new TomSelect("#select-users", {});
     </script>
 </x-app-layout>
