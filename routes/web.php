@@ -60,4 +60,9 @@ Route::middleware(['auth', 'verified'])->group(function() {
 
     /** Notification Routes */
     Route::get('/notifications', [\App\Http\Controllers\UserController::class, 'getNotifications'])->name('notifications.get');
+
+    /** Task Routes */
+    Route::post('/task/{task}/add-spent-time', [\App\Http\Controllers\TaskController::class, 'addSpentTime'])->name('task.add-spent-time');
+    Route::resource('task', \App\Http\Controllers\TaskController::class);
+
 });

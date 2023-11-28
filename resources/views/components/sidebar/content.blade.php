@@ -35,9 +35,8 @@
 
     <x-sidebar.link
         title="To Do"
-        href="{{ route('timesheet.index') }}"
-        :isActive="request()->routeIs('')"
-        soon="true"
+        href="{{ route('task.index') }}"
+        :isActive="request()->routeIs('task.index')"
     >
         <x-slot name="icon">
             <x-icons.todo class="flex-shrink-0 w-6 h-6" aria-hidden="true" />

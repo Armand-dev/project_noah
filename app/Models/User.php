@@ -61,4 +61,10 @@ class User extends Authenticatable
         return $this->morphMany(\Illuminate\Notifications\DatabaseNotification::class, 'notifiable')->orderBy('created_at','ASC');
     }
 
+    public function getAvatarUrl(): string
+    {
+        $formattedName = str_replace(' ', '+', $this->name);
+        return '<img style="display:inline; width: 30px; border-radius: 10px;" src="https://ui-avatars.com/api/?background=random&amp;name='. $formattedName .'">';
+    }
+
 }
