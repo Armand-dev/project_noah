@@ -194,11 +194,13 @@
     axios
         .get('/notifications')
         .then(res => {
-            res.data.forEach(notification => {
-                notification.data.type = notification.type;
-                notification.data.created_at = notification.created_at;
-                addNotification(notification.data);
-            })
+            if (Array.isArray(res.data)) {
+                res.data.forEach(notification => {
+                    notification.data.type = notification.type;
+                    notification.data.created_at = notification.created_at;
+                    addNotification(notification.data);
+                })
+            }
         })
         .catch(err => alert(err));
 

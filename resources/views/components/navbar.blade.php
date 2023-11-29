@@ -96,6 +96,12 @@
                 >
                     {{ __('Profile') }}
                 </x-dropdown-link>
+                <!-- Profile -->
+                <x-dropdown-link
+                    href="{{ config('billing.portal_url') }}"
+                >
+                    {{ __('Billing Portal') }}
+                </x-dropdown-link>
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">

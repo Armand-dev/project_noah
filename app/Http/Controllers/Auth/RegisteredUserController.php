@@ -51,9 +51,13 @@ class RegisteredUserController extends Controller
             'name' => $request->company_name,
             'uuid' => Str::uuid(),
         ]);
-
         $user->update([
             'employer_company_id' => $company->id
+        ]);
+
+        $user->createAsStripeCustomer([
+            'email' => $user->email,
+            'name' => $company->name,
         ]);
 
         event(new Registered($user));
