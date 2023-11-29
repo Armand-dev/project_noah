@@ -26,8 +26,6 @@ class HandleCustomerSubscriptionCreated implements ShouldQueue
 
     public function handle()
     {
-        Log::info('json_encode($this->webhookCall->payload)');
-        Log::info(json_encode($this->webhookCall->payload));
         $data = $this->webhookCall->payload['data']['object'];
 
         Subscription::create([
@@ -35,7 +33,7 @@ class HandleCustomerSubscriptionCreated implements ShouldQueue
             'name' => 'default',
             'stripe_id' => $data['id'],
 //            'stripe_status' => $data['status'],
-            'stripe_status' => 'paid',
+            'stripe_status' => 'active',
             'stripe_price' => $data[''],
             'quantity' => $data['quantity'],
             'trial_ends_at' => $data['trial_end'],
