@@ -7,6 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 use Laravel\Cashier\Cashier;
 use Laravel\Cashier\Subscription;
 use Spatie\WebhookClient\Models\WebhookCall;
@@ -25,6 +26,8 @@ class HandleCustomerSubscriptionCreated implements ShouldQueue
 
     public function handle()
     {
+        Log::info('json_encode($this->webhookCall->payload)');
+        Log::info(json_encode($this->webhookCall->payload));
         $data = $this->webhookCall->payload['data']['object'];
 
         Subscription::create([
