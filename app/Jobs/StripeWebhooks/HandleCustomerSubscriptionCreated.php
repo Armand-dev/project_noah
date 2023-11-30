@@ -26,7 +26,10 @@ class HandleCustomerSubscriptionCreated implements ShouldQueue
 
     public function handle()
     {
+        Log::info('json_encode($this->webhookCall->payload)');
+        Log::info(json_encode($this->webhookCall->payload));
         $data = $this->webhookCall->payload['data']['object'];
+        Log::info(json_encode($data));
 
         Subscription::create([
             'user_id' => Cashier::findBillable($data['customer'])->id,
