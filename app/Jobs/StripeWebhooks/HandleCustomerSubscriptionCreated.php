@@ -37,7 +37,7 @@ class HandleCustomerSubscriptionCreated implements ShouldQueue
             'stripe_id' => $data['id'],
 //            'stripe_status' => $data['status'],
             'stripe_status' => 'active',
-            'stripe_price' => $data[''],
+            'stripe_price' => $data['plan']['id'],
             'quantity' => $data['quantity'],
             'trial_ends_at' => $data['trial_end'],
             'ends_at' => $data['current_period_end'],
