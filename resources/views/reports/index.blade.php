@@ -15,7 +15,7 @@
                 <div class="border rounded p-4 bg-white shadow-md dark:bg-gray-700 dark:border-gray-500">
                     <div class="text-left text-gray-700 font-bold text-lg dark:text-gray-100">
                         Report W-001
-                        <button  onclick="modalW001Handler(true)" class="text-sm bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded float-right">
+                        <button  onclick="modalW001Handler(true)" class="text-sm bg-purple hover:bg-green-700 text-white font-bold py-1 px-2 rounded float-right">
                             Download
                         </button>
                     </div>
@@ -120,7 +120,7 @@
                                 </select>
                             </div>
                         </div>
-                        <button type="submit" id="downloadW001" dt-report="W-001" class="text-white inline-flex items-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                        <button type="submit" id="downloadW001" dt-report="W-001" class="text-white inline-flex items-center bg-purple hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                             Download
                         </button>
                     </form>

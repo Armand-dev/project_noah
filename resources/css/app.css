@@ -4,7 +4,21 @@
 @import "tailwindcss/utilities";
 @import "tom-select/dist/css/tom-select.bootstrap4.css";
 
+@font-face {
+    font-family: "Jakarta";
+    src: url("/public/media/fonts/PlusJakartaSans.woff") format('woff');
+}
+
+* {
+    font-family: Jakarta !important;
+    font-weight: bold;
+}
+
 .dark .ps__rail-y,
 .dark .ps__rail-x {
     background-color: transparent !important;
+}
+
+.bg-purple {
+    background: #655AED !important;
 }

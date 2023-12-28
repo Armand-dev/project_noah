@@ -65,7 +65,7 @@ class User extends Authenticatable
     public function getAvatarUrl(): string
     {
         $formattedName = str_replace(' ', '+', $this->name);
-        return '<img style="display:inline; width: 30px; border-radius: 10px;" src="https://ui-avatars.com/api/?background=random&amp;name='. $formattedName .'">';
+        return '<img style="display:inline; height: 40px; border-radius: 50%;" src="https://ui-avatars.com/api/?background=random&amp;name='. $formattedName .'">';
     }
 
 }

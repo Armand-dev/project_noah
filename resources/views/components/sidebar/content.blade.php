@@ -5,6 +5,14 @@
 >
 {{--    <span class="text-gray-500 bg-gray-100 rounded p-2"><span class="text-xs">Company:</span> <br><span class="text-sm font-semibold">{{ auth()->user()->companies()->first()->name }}</span></span>--}}
 
+    <div
+        x-transition
+        x-show="isSidebarOpen || isSidebarHovered"
+        class="text-sm text-gray-500"
+    >
+        DASHBOARD
+    </div>
+
     <x-sidebar.link
         title="Dashboard"
         href="{{ route('dashboard') }}"
@@ -15,12 +23,14 @@
         </x-slot>
     </x-sidebar.link>
 
+    <hr class="border-gray-200 dark:border-gray-900 mb-2">
+
     <div
         x-transition
         x-show="isSidebarOpen || isSidebarHovered"
-        class="text-sm text-gray-500"
+        class="text-sm text-gray-600"
     >
-            Tasks
+            TASKS
     </div>
 
     <x-sidebar.link
@@ -43,7 +53,9 @@
         </x-slot>
     </x-sidebar.link>
 
-{{--    <x-sidebar.dropdown--}}
+    <hr class="border-gray-200 dark:border-gray-900 mb-2">
+
+    {{--    <x-sidebar.dropdown--}}
 {{--        title="Buttons"--}}
 {{--        :active="Str::startsWith(request()->route()->uri(), 'buttons')"--}}
 {{--    >--}}
@@ -73,7 +85,7 @@
         x-show="isSidebarOpen || isSidebarHovered"
         class="text-sm text-gray-500"
     >
-        Communication
+        COMMUNICATION
     </div>
 
     <x-sidebar.link
@@ -86,13 +98,15 @@
         </x-slot>
     </x-sidebar.link>
 
+    <hr class="border-gray-200 dark:border-gray-900 mb-2">
+
     @if(auth()->user()->hasRole('leader'))
         <div
             x-transition
             x-show="isSidebarOpen || isSidebarHovered"
             class="text-sm text-gray-500"
         >
-            Admin
+            ADMIN
         </div>
     @endif
     @if(auth()->user()->hasPermissionTo('create users'))
@@ -153,6 +167,10 @@
                 <x-icons.reports class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
             </x-slot>
         </x-sidebar.link>
+    @endif
+
+    @if(auth()->user()->hasRole('leader'))
+        <hr class="border-gray-200 dark:border-gray-900 mb-2">
     @endif
 
 

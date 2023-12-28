@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
 
 class UserController extends Controller
 {
@@ -18,7 +19,7 @@ class UserController extends Controller
     {
         $heading = [
             'ID',
-            'Name',
+            'User Name',
             'Role',
             'Actions',
         ];
@@ -40,15 +41,18 @@ class UserController extends Controller
                     <a
                         href="/user/'.$user->id.'"
                     >
-                        <img style="display:inline; width: 30px;" src="https://ui-avatars.com/api/?background=random&name='.$avatarName.'"> '.$user->name.'
+                        <img style="display:inline; width: 28px; border-radius:50%; margin-right: 4px;" src="https://ui-avatars.com/api/?background=random&name='.$avatarName.'"> '.$user->name.'
                     </a>
                 </span>';
 
             return [
                 $user->id,
                 $nameColumn,
-                $user->getRoleNames(),
-                'Edit'
+                implode(", ", array_map(function($role) {
+                        return ucfirst($role);
+                    },
+                    json_decode($user->getRoleNames(), true))),
+                \view('components.icons.edit')->render()
             ];
         });
 

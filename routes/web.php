@@ -23,7 +23,7 @@ require __DIR__ . '/auth.php';
 
 Route::middleware(['auth', 'verified'])->group(function() {
 
-    Route::middleware(['subscribed'])->group(function (){
+    Route::middleware([/*'subscribed'*/])->group(function (){
 
         /** Dashboard Routes */
         Route::get('/dashboard', function () {

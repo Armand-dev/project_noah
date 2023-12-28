@@ -4,13 +4,19 @@
 ])
 
 @if(count($rows))
-<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border dark:border-gray-900">
+    <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
     <tr>
         @foreach($headings as $heading)
-            <th scope="col" class="px-2.5 py-3">
-                {{ __($heading) }}
-            </th>
+            @if($loop->first)
+                <th scope="col" class="px-3 py-2.5 text-center border dark:border-gray-900">
+                    {{ __($heading) }}
+                </th>
+            @else
+                <th scope="col" class="px-3 py-2.5 border dark:border-gray-900">
+                    {{ __($heading) }}
+                </th>
+            @endif
         @endforeach
     </tr>
     </thead>
@@ -18,9 +24,15 @@
         @foreach($rows as $columns)
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 @foreach($columns as $column)
-                    <td class="px-2.5 py-4 ">
-                        {!! $column !!}
-                    </td>
+                    @if($loop->first)
+                        <td class="px-3 py-2.5 text-center border dark:border-gray-900">
+                            {!! $column !!}
+                        </td>
+                    @else
+                        <td class="px-3 py-2.5 border dark:border-gray-900">
+                            {!! $column !!}
+                        </td>
+                    @endif
                 @endforeach
             </tr>
         @endforeach
