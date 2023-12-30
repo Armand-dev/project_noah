@@ -8,7 +8,7 @@
     <div
         x-transition
         x-show="isSidebarOpen || isSidebarHovered"
-        class="text-sm text-gray-500"
+        class="text-sm text-gray-500 font-medium"
     >
         DASHBOARD
     </div>
@@ -28,7 +28,7 @@
     <div
         x-transition
         x-show="isSidebarOpen || isSidebarHovered"
-        class="text-sm text-gray-600"
+        class="text-sm text-gray-600 font-medium"
     >
             TASKS
     </div>
@@ -83,7 +83,7 @@
     <div
         x-transition
         x-show="isSidebarOpen || isSidebarHovered"
-        class="text-sm text-gray-500"
+        class="text-sm text-gray-500 font-medium"
     >
         COMMUNICATION
     </div>
@@ -104,7 +104,7 @@
         <div
             x-transition
             x-show="isSidebarOpen || isSidebarHovered"
-            class="text-sm text-gray-500"
+            class="text-sm text-gray-500 font-medium"
         >
             ADMIN
         </div>

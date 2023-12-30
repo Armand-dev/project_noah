@@ -28,15 +28,15 @@
     </div>
 </div>
 
-<table id="timesheet" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+<table id="timesheet" class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border dark:border-gray-900">
     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-    <tr>
-        @foreach($headings as $heading)
-            <th scope="col" class="px-2 py-2">
-                {{ __($heading) }}
-            </th>
-        @endforeach
-    </tr>
+        <tr>
+            @foreach($headings as $heading)
+                <th scope="col" class="px-1 py-1 border-r border-gray-200 dark:border-gray-900">
+                    {{ __($heading) }}
+                </th>
+            @endforeach
+        </tr>
     </thead>
     <tbody>
         @foreach($timesheet as $day => $row)
@@ -44,8 +44,11 @@
 
                 @foreach($row['data'] as $work)
                     <tr class="
+                    border-b
+                    border-gray-200
+                    dark:border-gray-900
                     @if(\Carbon\Carbon::parse($day)->isToday())
-                        bg-green-100
+                        bg-purple-200 dark:bg-purple-800
                     @elseif($row['meta']['is_weekend'])
                         bg-gray-100 dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600
                     @else
@@ -55,35 +58,35 @@
                     dt-day="{{ $day }}"
                     dt-id="{{ $work['id'] }}"
                     >
-                        <th dt-col="day" scope="row" class="@if($loop->last) border-b dark:border-gray-700 @endif px-2 py-2 font-medium text-gray-900 whitespace-nowrap @if(\Carbon\Carbon::parse($day)->isToday()) dark:text-gray-700 @else dark:text-white @endif">@if($loop->first)
+                        <th dt-col="day" scope="row" class=" border-r border-gray-200 dark:border-gray-900 @if($loop->last) border-b dark:border-gray-700 @endif px-2 py-2  text-gray-900 whitespace-nowrap @if(\Carbon\Carbon::parse($day)->isToday()) dark:text-gray-700 @else dark:text-white @endif">@if($loop->first)
                                 {{ $day ?? '' }}
                             @endif</th>
-                        <td dt-col="client" class="px-2 py-2 border-b dark:border-gray-700">
+                        <td dt-col="client" class="px-2 py-2  border-r border-gray-200 dark:border-gray-900">
                             {{ $work['client'] ?? '' }}
                         </td>
-                        <td dt-col="project" class="px-2 py-2 border-b dark:border-gray-700">
+                        <td dt-col="project" class="px-2 py-2  border-r border-gray-200 dark:border-gray-900">
                             {{ $work['project'] ?? '' }}
                         </td>
-                        <td dt-col="activity" class="px-2 py-2 border-b dark:border-gray-700">
+                        <td dt-col="activity" class="px-2 py-2  border-r border-gray-200 dark:border-gray-900">
                             {{ $work['activity'] ?? '' }}
                         </td>
-                        <td dt-col="subactivity" class="px-2 py-2 border-b dark:border-gray-700">
+                        <td dt-col="subactivity" class="px-2 py-2  border-r border-gray-200 dark:border-gray-900">
                             {{ $work['subactivity'] ?? '' }}
                         </td>
-                        <td dt-col="user" class="px-2 py-2 border-b dark:border-gray-700">
+                        <td dt-col="user" class="px-2 py-2  border-r border-gray-200 dark:border-gray-900">
                             {{ $work['user'] ?? '' }}
                         </td>
-                        <td dt-col="hours" class="px-2 py-2 border-b dark:border-gray-700">
+                        <td dt-col="hours" class="px-2 py-2 border-r border-gray-200 dark:border-gray-900">
                             {{ $work['hours'] ?? '' }}
                         </td>
-                        <td dt-col="observations" class="px-2 py-2 border-b dark:border-gray-700">
+                        <td dt-col="observations" class="px-2 py-2  border-r border-gray-200 dark:border-gray-900">
                             {{ $work['observations'] ?? '' }}
                         </td>
 
                         <td class="px-2 py-2 text-center
 
                         @if(\Carbon\Carbon::parse($day)->isToday())
-                            bg-green-100
+                            bg-purple-200 dark:bg-purple-800
                         @elseif($row['meta']['is_weekend'])
                             bg-gray-100 dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600
                         @else
@@ -94,7 +97,7 @@
                                 <a
                                     dt-col="edit"
                                     href="#"
-                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                    class=" text-blue-600 dark:text-blue-500 hover:underline"
                                     id="editTimesheet"
                                 >
                                     <x-icons.edit class="flex-shrink-0" style="width: 10px;" aria-hidden="true" />
@@ -105,8 +108,11 @@
                 @endforeach
             @else
                 <tr class="
+                border-b
+                border-gray-200
+                dark:border-gray-900
                 @if(\Carbon\Carbon::parse($day)->isToday())
-                    bg-green-100
+                    bg-purple-200 dark:bg-purple-800
                 @elseif($row['meta']['is_weekend'])
                     bg-gray-100 dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600
                 @else
@@ -115,21 +121,21 @@
                 "
                 dt-day="{{ $day }}"
                 >
-                    <th dt-col="day" scope="row" class="border-b dark:border-gray-700 px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <th dt-col="day" scope="row" class="border-r border-gray-200 dark:border-gray-900 px-2 py-2  text-gray-900 whitespace-nowrap dark:text-white">
                         {{ $day ?? ''}}
                     </th>
-                    <td dt-col="client" class="px-2 py-2 border-b dark:border-gray-700"></td>
-                    <td dt-col="project" class="px-2 py-2 border-b dark:border-gray-700"></td>
-                    <td dt-col="activity" class="px-2 py-2 border-b dark:border-gray-700"></td>
-                    <td dt-col="subactivity" class="px-2 py-2 border-b dark:border-gray-700"></td>
-                    <td dt-col="user" class="px-2 py-2 border-b dark:border-gray-700"></td>
-                    <td dt-col="hours" class="px-2 py-2 border-b dark:border-gray-700"></td>
-                    <td dt-col="observations" class="px-2 py-2 border-b dark:border-gray-700"></td>
+                    <td dt-col="client" class="px-2 py-2 border-r border-gray-200 dark:border-gray-900"></td>
+                    <td dt-col="project" class="px-2 py-2 border-r border-gray-200 dark:border-gray-900"></td>
+                    <td dt-col="activity" class="px-2 py-2 border-r border-gray-200 dark:border-gray-900"></td>
+                    <td dt-col="subactivity" class="px-2 py-2 border-r border-gray-200 dark:border-gray-900"></td>
+                    <td dt-col="user" class="px-2 py-2 border-b border-r border-gray-200 dark:border-gray-900"></td>
+                    <td dt-col="hours" class="px-2 py-2 border-b border-r border-gray-200 dark:border-gray-900"></td>
+                    <td dt-col="observations" class="px-2 py-2 border-b border-r border-gray-200 dark:border-gray-900"></td>
 
-                    <td class="px-2 py-2 text-center border-b dark:border-gray-700 sticky right-0
+                    <td class="px-2 py-2 text-center border-r border-gray-200 dark:border-gray-900 sticky right-0
 
                         @if(\Carbon\Carbon::parse($day)->isToday())
-                            bg-green-100
+                            bg-purple-200 dark:bg-purple-800
                         @elseif($row['meta']['is_weekend'])
                             bg-gray-100 dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600
                         @else
@@ -139,7 +145,7 @@
                         <a
                             dt-col="edit"
                             href="#"
-                            class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                            class=" text-blue-600 dark:text-blue-500 hover:underline"
                             id="editTimesheet"
                         >
                             <x-icons.edit class="flex-shrink-0" style="width: 10px;" aria-hidden="true" />

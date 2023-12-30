@@ -22,7 +22,7 @@
         @endif
 
         <span
-            class="text-base font-medium whitespace-nowrap"
+            class="text-base  whitespace-nowrap"
             x-show="isSidebarOpen || isSidebarHovered"
         >
             {{ $title }}
@@ -53,7 +53,7 @@
         @endif
 
         <span
-            class="text-base font-medium"
+            class="text-base "
             x-show="isSidebarOpen || isSidebarHovered"
         >
             {{ $title }}

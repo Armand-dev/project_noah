@@ -47,7 +47,7 @@ class TimesheetController extends Controller
                     $work['user'] = $users->first(function ($item) use ($work) {
                         return $item->id === $work['user_id'];
                     })->name;
-
+                    $work['day'] = Carbon::parse($work['day'])->format('d M y');
                     return $work;
                 })
                 ->groupBy(function($timesheet) {
@@ -80,6 +80,7 @@ class TimesheetController extends Controller
                         return $item->id === $work['user_id'];
                     })->name;
 
+                    $work['day'] = Carbon::parse($work['day'])->format('d M y');
                     return $work;
                 })
                 ->groupBy(function($timesheet) {
@@ -132,7 +133,7 @@ class TimesheetController extends Controller
             'activity_id' => $request->activity_id,
             'hours' => $request->hours,
             'observations' => $request->observations ?? '',
-            'day' => $request->day,
+            'day' => Carbon::parse($request->day)->format('Y-m-d'),
             'company_id' => $company->id,
         ]);
 
@@ -185,7 +186,7 @@ class TimesheetController extends Controller
 
         // Iterate over the period
         foreach ($period as $date) {
-            $timesheet[$date->format('Y-m-d')] = [
+            $timesheet[$date->format('d M y')] = [
                 'meta' => [
                     'is_weekend' => $date->isWeekend()
                 ],
