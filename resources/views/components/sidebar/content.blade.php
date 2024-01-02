@@ -106,19 +106,8 @@
             x-show="isSidebarOpen || isSidebarHovered"
             class="text-sm text-gray-500 font-medium"
         >
-            ADMIN
+            SETTINGS
         </div>
-    @endif
-    @if(auth()->user()->hasPermissionTo('create users'))
-        <x-sidebar.link
-            title="Users"
-                    href="{{ route('user.index') }}"
-            :isActive="request()->routeIs('user.index')"
-        >
-            <x-slot name="icon">
-                <x-icons.user class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-            </x-slot>
-        </x-sidebar.link>
     @endif
 
     @if(auth()->user()->hasRole('leader'))
@@ -158,6 +147,32 @@
     @endif
 
     @if(auth()->user()->hasRole('leader'))
+        <hr class="border-gray-200 dark:border-gray-900 mb-2">
+    @endif
+
+    @if(auth()->user()->hasRole('leader'))
+        <div
+            x-transition
+            x-show="isSidebarOpen || isSidebarHovered"
+            class="text-sm text-gray-500 font-medium"
+        >
+            ADMIN
+        </div>
+    @endif
+    @if(auth()->user()->hasPermissionTo('create users'))
+        <x-sidebar.link
+            title="Users"
+                    href="{{ route('user.index') }}"
+            :isActive="request()->routeIs('user.index')"
+        >
+            <x-slot name="icon">
+                <x-icons.user class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            </x-slot>
+        </x-sidebar.link>
+    @endif
+
+
+    @if(auth()->user()->hasRole('leader'))
         <x-sidebar.link
             title="Reports"
             href="{{ route('report.index') }}"
@@ -165,6 +180,19 @@
         >
             <x-slot name="icon">
                 <x-icons.reports class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            </x-slot>
+        </x-sidebar.link>
+    @endif
+
+
+    @if(auth()->user()->hasRole('leader'))
+        <x-sidebar.link
+            title="Configurations"
+            href="{{ route('configuration.show') }}"
+            :isActive="request()->routeIs('configuration.show')"
+        >
+            <x-slot name="icon">
+                <x-icons.settings class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
             </x-slot>
         </x-sidebar.link>
     @endif

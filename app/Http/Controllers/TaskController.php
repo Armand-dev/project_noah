@@ -123,7 +123,9 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        $task->delete();
+
+        return redirect()->route('task.index');
     }
 
     public function addSpentTime(Request $request, Task $task): \Illuminate\Http\JsonResponse

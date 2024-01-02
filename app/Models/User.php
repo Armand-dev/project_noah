@@ -44,6 +44,10 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    protected $appends = [
+        'avatar'
+    ];
+
     /**
      * The channels the user receives notification broadcasts on.
      */
@@ -66,6 +70,11 @@ class User extends Authenticatable
     {
         $formattedName = str_replace(' ', '+', $this->name);
         return '<img style="display:inline; height: '.$size.'px; border-radius: 50%;" src="https://ui-avatars.com/api/?background=random&amp;name='. $formattedName .'">';
+    }
+
+    public function getAvatarAttribute()
+    {
+        return $this->getAvatarUrl(20);
     }
 
 }

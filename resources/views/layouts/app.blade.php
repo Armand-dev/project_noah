@@ -20,6 +20,10 @@
     </style>
 
     <!-- Scripts -->
+    <script
+        src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+        integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
+        crossorigin="anonymous"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="{{env('APP_URL')}}:{{env('WEBSOCKET_PORT')}}/socket.io/socket.io.js"></script>
 </head>

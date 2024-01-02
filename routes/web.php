@@ -67,6 +67,10 @@ Route::middleware(['auth', 'verified'])->group(function() {
         Route::post('/task/{task}/add-spent-time', [\App\Http\Controllers\TaskController::class, 'addSpentTime'])->name('task.add-spent-time');
         Route::resource('task', \App\Http\Controllers\TaskController::class);
 
+        /** Configuration Routes */
+        Route::get('/configuration', [\App\Http\Controllers\ConfigurationController::class, 'show'])->name('configuration.show');
+        Route::patch('/update-task-prefix', [\App\Http\Controllers\ConfigurationController::class, 'updateTaskPrefix'])->name('configuration.update-task-prefix');
+
     });
 
     /** Billing Routes */
