@@ -18,7 +18,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $headings = ['ID', 'Title', 'Assignee', 'Priority', ''];
+        $headings = ['ID', 'Title', 'Project', 'Assignee', 'Status', 'Due Date'];
 
         $tasks = Task::query()
             ->orderBy('number', 'DESC')
@@ -27,13 +27,15 @@ class TaskController extends Controller
                 /** @var User $assignee */
                 $assignee = $task->assignee()->first();
                 $task->assignee = $assignee->name;
-                $task->assignee_image = $assignee->getAvatarUrl();
-                $task->due = Carbon::parse($task->due_date)->format('d-M');
+                $task->project_name = $task->project->name ?? '-';
+                $task->assignee_image = $assignee->getAvatarUrl(30);
+                $task->due = Carbon::parse($task->due_date)->format('d M y');
                 $task->prefixed_number = $task->prefix . '-' . $task->number;
                 $task->status_name = Task::STATUSES[$task->status];
 
                 return $task;
-            });
+            })
+            ->toArray();
 
         return view('tasks.index')
             ->with('heading', $headings)
@@ -103,7 +105,9 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        //
+        $task->prefixed_number = $task->prefix . '-' . $task->number;
+        return view('tasks.edit')
+            ->with('task', $task);
     }
 
     /**

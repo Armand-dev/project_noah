@@ -17,6 +17,7 @@ class Task extends Model
         1 => 'Not started',
         2 => 'In progress',
         3 => 'On hold',
+        4 => 'Done',
     ];
 
     const PRIORITIES = [
@@ -28,5 +29,10 @@ class Task extends Model
     public function assignee(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
     }
 }
